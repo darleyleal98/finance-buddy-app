@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">FinanceBuddy</string>
+    <string name="unlock_your_cell_phone">Unlock your cell phone</string>
+    <string name="use_pattern">Use pattern</string>
+    <string name="authentication_error">Authentication error: %1$s</string>
+    <string name="authentication_succeeded">Authentication succeeded!</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="cancel">Cancel</string>
+    <string name="home">Home</string>
+    <string name="report">Reports</string>
+    <string name="category">Category</string>
+    <string name="new_registration">New Registration</string>
+    <string name="choose_a_date">Choose a date</string>
+    <string name="save">Save</string>
+    <string name="this_field_is_required">This field is required!</string>
+    <string name="confirm">Confirm</string>
+    <string name="available_balance">Available balance</string>
+    <string name="type">Type</string>
+    <string name="the_registration_was_saved_successfully">The registration was saved successfully!</string>
+    <string name="my_categories">My Categories</string>
+    <string name="this_category_was_save_successfully">This category was save successfully</string>
+    <string name="incorrect_data_please_check_and_try_again">Incorrect data, please check and try again!</string>
+    <string name="add_new_category">Add new category</string>
+    <string name="update_category">Update category</string>
+</resources>
