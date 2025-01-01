@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.darleyleal.financebuddy.R
 import com.darleyleal.financebuddy.presenter.components.RadioButtonSingleSelection
-import com.darleyleal.financebuddy.presenter.screens.insert.components.CustomTextField
+import com.darleyleal.financebuddy.presenter.components.CustomTextField
 
 @Composable
 fun CategoryDialog(

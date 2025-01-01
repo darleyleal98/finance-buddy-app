@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.darleyleal.financebuddy.data.local.Category
 
 @Composable
 fun RadioButtonSingleSelection(

@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.sp
 fun CategoryItemCard(
     modifier: Modifier = Modifier,
     title: String,
-    onClickEditCategory: () -> Unit
+    onClickEditCategory: () -> Unit,
+    onClickDeleteItem: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -69,7 +70,7 @@ fun CategoryItemCard(
                 Spacer(modifier = modifier.padding(start = 22.dp))
                 Icon(
                     modifier = modifier.clickable {
-
+                        onClickDeleteItem()
                     },
                     imageVector = Icons.Filled.Delete, contentDescription = null
                 )

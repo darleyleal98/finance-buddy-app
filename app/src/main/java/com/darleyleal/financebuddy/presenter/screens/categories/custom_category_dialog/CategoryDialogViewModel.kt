@@ -12,8 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryDialogViewModel @Inject constructor(private val categoryUserCase: CategoryUserCase) :
-    ViewModel() {
+class CategoryDialogViewModel @Inject constructor(
+    private val categoryUserCase: CategoryUserCase
+) : ViewModel() {
+
     private val _category = MutableStateFlow("")
     val category = _category.asStateFlow()
 

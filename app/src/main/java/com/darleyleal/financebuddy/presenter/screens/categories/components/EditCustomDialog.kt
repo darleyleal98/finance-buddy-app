@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.darleyleal.financebuddy.R
-import com.darleyleal.financebuddy.presenter.screens.insert.components.CustomTextField
+import com.darleyleal.financebuddy.presenter.components.CustomTextField
 
 @Composable
 fun EditCustDialog(

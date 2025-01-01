@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -40,9 +42,9 @@ import androidx.compose.ui.unit.sp
 import com.darleyleal.financebuddy.R
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
 import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
-import com.darleyleal.financebuddy.presenter.screens.insert.components.CustomTextField
-import com.darleyleal.financebuddy.presenter.screens.insert.components.DatePickerField
+import com.darleyleal.financebuddy.presenter.components.CustomTextField
 import com.darleyleal.financebuddy.presenter.components.RadioButtonSingleSelection
+import com.darleyleal.financebuddy.presenter.screens.insert.components.DatePickerField
 import com.darleyleal.financebuddy.presenter.theme.FinanceBuddyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +68,7 @@ fun InsertScreen(
     val value by viewModel.value.collectAsState()
     val date by viewModel.date.collectAsState()
     val radioOptionSelected by viewModel.radioOptionSelected.collectAsState()
-    val radioOptions = viewModel.radioOptionsList
+    val radioOptionsList by viewModel.radioOptionsList.collectAsState()
 
     FinanceBuddyTheme {
         Scaffold(
@@ -134,16 +136,6 @@ fun InsertScreen(
                             viewModel.updateDateTextField(it)
                         }
                     )
-                    Text(
-                        text = stringResource(R.string.type),
-                        fontSize = 18.sp,
-                        modifier = modifier.padding(horizontal = 8.dp)
-                    )
-                    RadioButtonSingleSelection(radioButtons = radioOptions,
-                        radioButtonSelected = {
-                            viewModel.updateRadioButtonTextField(it)
-                        }
-                    )
                     Spacer(modifier = modifier.padding(top = 16.dp))
                     Button(
                         modifier = modifier
@@ -169,6 +161,7 @@ fun InsertScreen(
                                     ).show()
                                     onPopBackStack()
                                 }
+
                                 else -> {
                                     Toast.makeText(
                                         context,

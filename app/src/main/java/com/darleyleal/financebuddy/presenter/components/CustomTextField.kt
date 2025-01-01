@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presenter.screens.insert.components
+package com.darleyleal.financebuddy.presenter.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,38 +48,48 @@ fun CustomTextField(
             },
         value = text,
         onValueChange = {
-            updateTextValue(it)
             textFieldIsValid = it.trim().isNotEmpty()
+            updateTextValue(it)
         },
         label = {
-            Text(text = title)
+            when {
+                textFieldIsValid -> {
+                    Text(text = title)
+                }
+            }
         },
         leadingIcon = {
             Icon(imageVector = icon, contentDescription = null)
         },
         supportingText = {
-            if (!textFieldIsValid || !fieldIsValidate) {
-                Text(
-                    text = stringResource(R.string.this_field_is_required),
-                    color = Color.Red,
-                    fontSize = 16.sp
-                )
+            when {
+                !textFieldIsValid || !fieldIsValidate && text.isBlank() -> {
+                    Text(
+                        text = stringResource(R.string.this_field_is_required),
+                        color = Color.Red,
+                        fontSize = 16.sp
+                    )
+                }
             }
         },
         trailingIcon = {
-            if (!textFieldIsValid || !fieldIsValidate) {
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = null,
-                    tint = Color.Red
-                )
+            when {
+                !textFieldIsValid || !fieldIsValidate && text.isBlank() -> {
+                    Icon(
+                        imageVector = Icons.Filled.Error,
+                        contentDescription = null,
+                        tint = Color.Red
+                    )
+                }
             }
-            if (text.isNotBlank()) {
-                Icon(
-                    modifier = modifier.clickable { updateTextValue("") },
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = null
-                )
+            when {
+                text.isNotEmpty() -> {
+                    Icon(
+                        modifier = modifier.clickable { updateTextValue("") },
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = null
+                    )
+                }
             }
         },
         isError = !textFieldIsValid || !fieldIsValidate,

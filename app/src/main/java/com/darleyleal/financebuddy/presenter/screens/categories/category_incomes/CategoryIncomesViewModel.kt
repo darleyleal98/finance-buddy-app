@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryIncomesViewModel @Inject constructor(
-    private val categoryUsercase: CategoryUserCase
+    private val categoryUserCase: CategoryUserCase
 ) : ViewModel() {
 
     private val _listAllIncomes = MutableStateFlow<List<Category>>(emptyList())
@@ -26,7 +26,7 @@ class CategoryIncomesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            categoryUsercase.getAllItemsByCategoryEqualsIncome().collect {
+            categoryUserCase.getAllItemsByCategoryEqualsIncome().collect {
                 _listAllIncomes.value = it
             }
         }
@@ -38,7 +38,7 @@ class CategoryIncomesViewModel @Inject constructor(
 
     private fun getAllIncomes() {
         viewModelScope.launch {
-            categoryUsercase.getAllItemsByCategoryEqualsIncome().collect {
+            categoryUserCase.getAllItemsByCategoryEqualsIncome().collect {
                 _listAllIncomes.value = it
             }
         }
@@ -53,9 +53,17 @@ class CategoryIncomesViewModel @Inject constructor(
     fun update(name: String) {
         viewModelScope.launch {
             category.value?.id?.let {
-                categoryUsercase.update(it, name)
+                categoryUserCase.update(it, name)
             }
             getAllIncomes()
+        }
+    }
+
+    fun delete() {
+        viewModelScope.launch {
+            category.value?.let {
+                categoryUserCase.delete(it)
+            }
         }
     }
 

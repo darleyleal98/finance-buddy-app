@@ -2,7 +2,9 @@ package com.darleyleal.financebuddy.presenter.screens.insert
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.darleyleal.financebuddy.data.local.Category
 import com.darleyleal.financebuddy.domain.enums.Type
+import com.darleyleal.financebuddy.domain.usercases.CategoryUserCase
 import com.darleyleal.financebuddy.domain.usercases.RegistrationUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InsertViewModel @Inject constructor(
-    private val registrationUserCase: RegistrationUserCase
+    private val registrationUserCase: RegistrationUserCase,
+    private val categoryUserCase: CategoryUserCase
 ) : ViewModel() {
 
     private val _name = MutableStateFlow("")
@@ -28,7 +31,7 @@ class InsertViewModel @Inject constructor(
     private val _date = MutableStateFlow("")
     val date = _date.asStateFlow()
 
-    val radioOptionsList = listOf(Type.Income.name, Type.Expense.name)
+    val radioOptionsList = MutableStateFlow<List<String>>(emptyList())
     private val _radioOptionSelected = MutableStateFlow("")
     val radioOptionSelected = _radioOptionSelected.asStateFlow()
 
@@ -78,7 +81,10 @@ class InsertViewModel @Inject constructor(
         }
     }
 
-    fun insert(name: String, description: String, value: String, date: String, type: String) {
+    fun insert(
+        name: String, description: String, value: String,
+        date: String, type: String
+    ) {
         if (validateFormFields()) {
             viewModelScope.launch {
                 registrationUserCase.insert(

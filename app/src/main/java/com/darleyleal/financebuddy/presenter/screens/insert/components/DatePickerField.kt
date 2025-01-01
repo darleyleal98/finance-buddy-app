@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import com.darleyleal.financebuddy.R
+import com.darleyleal.financebuddy.presenter.components.CustomTextField
 import com.darleyleal.financebuddy.presenter.screens.insert.utils.toBrazilianDateFormat
 
 @OptIn(ExperimentalMaterial3Api::class)

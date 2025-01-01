@@ -22,4 +22,9 @@
     <string name="incorrect_data_please_check_and_try_again">Incorrect data, please check and try again!</string>
     <string name="add_new_category">Add new category</string>
     <string name="update_category">Update category</string>
+    <string name="are_you_sure_about_this">Are you sure about this?</string>
+    <string name="delete_item">If you confirm the item will be permanently deleted from the device.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="this_item_was_deleted">This item was deleted!</string>
+    <string name="oops_no_items_to_list">Oops, no items to list :(</string>
 </resources>
