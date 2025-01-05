@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presenter.screens.categories.components
+package com.darleyleal.financebuddy.presenter.components
 
 import android.content.Context
 import android.widget.Toast
@@ -12,7 +12,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.darleyleal.financebuddy.R
 import com.darleyleal.financebuddy.data.local.Category
-import com.darleyleal.financebuddy.presenter.components.ItemsNotFound
 
 @Composable
 fun CategorySection(

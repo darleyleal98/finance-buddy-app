@@ -24,5 +24,8 @@ data class Registration(
     val date: String,
 
     @ColumnInfo(name = "type")
-    val type: String
+    val type: String,
+
+    @ColumnInfo(name = "category")
+    val category: String
 )

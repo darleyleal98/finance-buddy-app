@@ -6,19 +6,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,7 +31,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -43,8 +40,9 @@ import com.darleyleal.financebuddy.R
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
 import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
 import com.darleyleal.financebuddy.presenter.components.CustomTextField
-import com.darleyleal.financebuddy.presenter.components.RadioButtonSingleSelection
-import com.darleyleal.financebuddy.presenter.screens.insert.components.DatePickerField
+import com.darleyleal.financebuddy.presenter.components.DatePickerField
+import com.darleyleal.financebuddy.presenter.components.ItemsNotFound
+import com.darleyleal.financebuddy.presenter.components.TypeRegistration
 import com.darleyleal.financebuddy.presenter.theme.FinanceBuddyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,9 +50,10 @@ import com.darleyleal.financebuddy.presenter.theme.FinanceBuddyTheme
 @Composable
 fun InsertScreen(
     modifier: Modifier = Modifier,
+    indice: Int,
     navigationProvider: NavigationProvider,
     paddingValues: PaddingValues,
-    onPopBackStack: () -> Unit = {},
+    onPopBackStack: () -> Unit = {}
 ) {
     val viewModel = navigationProvider.getViewModel(ViewModelKey.INSERT) as InsertViewModel
 
@@ -63,12 +62,7 @@ fun InsertScreen(
     val context = LocalContext.current
     var validateFields by remember { mutableStateOf(true) }
 
-    val name by viewModel.name.collectAsState()
-    val description by viewModel.description.collectAsState()
-    val value by viewModel.value.collectAsState()
-    val date by viewModel.date.collectAsState()
-    val radioOptionSelected by viewModel.radioOptionSelected.collectAsState()
-    val radioOptionsList by viewModel.radioOptionsList.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     FinanceBuddyTheme {
         Scaffold(
@@ -83,7 +77,7 @@ fun InsertScreen(
                     navigationIcon = {
                         IconButton(onClick = {
                             onPopBackStack()
-                            viewModel.cleanFields()
+                            viewModel.clearFields()
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
@@ -91,67 +85,12 @@ fun InsertScreen(
                             )
                         }
                     },
-                    scrollBehavior = scrollBehavior
-                )
-            },
-            content = { paddingValues ->
-                Column(
-                    modifier = modifier
-                        .padding(paddingValues)
-                        .verticalScroll(scrollState)
-                        .imePadding()
-                ) {
-                    Spacer(modifier = modifier.padding(8.dp))
-                    CustomTextField(title = "Name",
-                        text = name,
-                        icon = Icons.Filled.Edit,
-                        singleLine = true,
-                        fieldIsValidate = validateFields || viewModel.validateField(name),
-                        updateTextValue = {
-                            viewModel.updateNameTextField(it)
-                        }
-                    )
-                    CustomTextField(title = "Description",
-                        text = description,
-                        icon = Icons.Filled.Description, singleLine = false,
-                        fieldIsValidate = validateFields || viewModel.validateField(description),
-                        updateTextValue = {
-                            viewModel.updateDescriptionTextField(it)
-                        }
-                    )
-                    CustomTextField(title = "Value",
-                        text = value,
-                        icon = Icons.Filled.AttachMoney, singleLine = true,
-                        fieldIsValidate = validateFields || viewModel.validateField(value),
-                        updateTextValue = {
-                            viewModel.updateValueTextField(it)
-                        }
-                    )
-                    DatePickerField(
-                        title = "Date",
-                        text = date,
-                        fieldIsValidate = validateFields || viewModel.validateField(date),
-                        icon = Icons.Filled.DateRange,
-                        toUpdateDatePickerField = {
-                            viewModel.updateDateTextField(it)
-                        }
-                    )
-                    Spacer(modifier = modifier.padding(top = 16.dp))
-                    Button(
-                        modifier = modifier
-                            .align(Alignment.CenterHorizontally)
-                            .size(142.dp, 44.dp),
-                        onClick = {
+                    actions = {
+                        IconButton(onClick = {
                             validateFields = viewModel.validateFormFields()
                             when {
                                 validateFields -> {
-                                    viewModel.insert(
-                                        name,
-                                        description,
-                                        value,
-                                        date,
-                                        radioOptionSelected
-                                    )
+                                    viewModel.insertRegistration()
                                     Toast.makeText(
                                         context,
                                         context.getString(
@@ -171,11 +110,103 @@ fun InsertScreen(
                                 }
                             }
                         }) {
-                        Text(
-                            text = stringResource(
-                                R.string.save
-                            ).uppercase(), fontSize = 22.sp
-                        )
+                            Icon(
+                                imageVector = Icons.Filled.Check,
+                                contentDescription = null
+                            )
+                        }
+                    },
+                    scrollBehavior = scrollBehavior
+                )
+            },
+            content = { paddingValues ->
+                Column(
+                    modifier = modifier
+                        .padding(paddingValues)
+                        .verticalScroll(scrollState)
+                        .imePadding()
+                        .navigationBarsPadding()
+
+                ) {
+                    Spacer(modifier = modifier.padding(8.dp))
+
+                    CustomTextField(title = "Name",
+                        text = uiState.name,
+                        icon = Icons.Filled.Edit,
+                        singleLine = true,
+                        fieldIsValidate = validateFields || viewModel.validateFormFields(),
+                        updateTextValue = {
+                            viewModel.updateName(it)
+                        }
+                    )
+
+                    CustomTextField(
+                        title = "Description",
+                        text = uiState.description,
+                        icon = Icons.Filled.Description, singleLine = false,
+                        fieldIsValidate = validateFields || viewModel.validateFormFields(),
+                        updateTextValue = {
+                            viewModel.updateDescription(it)
+                        }
+                    )
+
+                    CustomTextField(title = "Value",
+                        text = uiState.value,
+                        icon = Icons.Filled.AttachMoney, singleLine = true,
+                        fieldIsValidate = validateFields || viewModel.validateFormFields(),
+                        updateTextValue = {
+                            viewModel.updateValue(it)
+                        }
+                    )
+
+                    DatePickerField(
+                        title = "Date",
+                        text = uiState.date,
+                        fieldIsValidate = validateFields || viewModel.validateFormFields(),
+                        icon = Icons.Filled.DateRange,
+                        toUpdateDatePickerField = {
+                            viewModel.updateDate(it)
+                        }
+                    )
+
+                    when (indice) {
+                        0 -> {
+                            when {
+                                uiState.incomes.isNotEmpty() ->  {
+                                    TypeRegistration(
+                                        listOfCategory = uiState.incomes,
+                                        optionSelected = {
+                                            viewModel.updateSelectedType(it)
+                                        },
+                                        title = stringResource(id = R.string.select_a_income_type)
+                                    )
+                                    viewModel.selectCategory(stringResource(id = R.string.income))
+                                }
+
+                                else -> {
+                                    ItemsNotFound()
+                                }
+                            }
+                        }
+
+                        1 -> {
+                            when {
+                                uiState.expenses.isNotEmpty() -> {
+                                    TypeRegistration(
+                                        listOfCategory = uiState.expenses,
+                                        optionSelected = {
+                                            viewModel.updateSelectedType(it)
+                                        },
+                                        title = stringResource(id = R.string.select_a_expense_type)
+                                    )
+                                    viewModel.selectCategory(stringResource(id = R.string.expense))
+                                }
+
+                                else -> {
+                                    ItemsNotFound()
+                                }
+                            }
+                        }
                     }
                 }
             }

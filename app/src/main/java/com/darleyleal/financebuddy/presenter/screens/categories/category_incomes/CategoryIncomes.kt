@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
 import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
-import com.darleyleal.financebuddy.presenter.screens.categories.components.CategorySection
+import com.darleyleal.financebuddy.presenter.components.CategorySection
 import com.darleyleal.financebuddy.presenter.theme.FinanceBuddyTheme
 
 @Composable

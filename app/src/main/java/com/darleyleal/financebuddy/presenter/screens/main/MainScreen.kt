@@ -4,6 +4,9 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.TrendingDown
+import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -26,15 +29,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.darleyleal.financebuddy.R
+import com.darleyleal.financebuddy.domain.enums.Type
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
 import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
 import com.darleyleal.financebuddy.domain.navigation.bottonNavigationItems
+import com.darleyleal.financebuddy.presenter.components.CustomExpandableFloatingActionButton
+import com.darleyleal.financebuddy.presenter.components.FABItem
+import com.darleyleal.financebuddy.presenter.components.HomeScreenTopAppBar
 import com.darleyleal.financebuddy.presenter.components.TypeOptionsTopAppBar
+import com.darleyleal.financebuddy.presenter.components.UpdateBalanceDialog
 import com.darleyleal.financebuddy.presenter.screens.categories.CategoriesScreen
-import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialog
+import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.BalanceViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.HomeScreen
-import com.darleyleal.financebuddy.presenter.screens.home.components.HomeScreenTopAppBar
 import com.darleyleal.financebuddy.presenter.screens.reports.ReportScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,22 +51,37 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     navigationProvider: NavigationProvider,
     selectedItemIndex: Int,
-    onNavigatoToInsertScreen: () -> Unit,
+    onNavigateToInsertScreenWithIndice: (Int) -> Unit,
     selectedItemIndexUpdate: (Int) -> Unit
 ) {
-    var repostButtonWasClicked by remember { mutableStateOf(false) }
-    var categoryButtonWasClicked by remember { mutableStateOf(false) }
-    val showCategoryDialog = remember { mutableStateOf(false) }
-
     val categoryDialogViewModel = navigationProvider.getViewModel(
         ViewModelKey.NEW_CATEGORY
     ) as CategoryDialogViewModel
+
+    val balanceViewModel = navigationProvider.getViewModel(
+        ViewModelKey.BALANCE
+    ) as BalanceViewModel
+
+    val uiState by balanceViewModel.uiState.collectAsState()
+    var validateBalanceField by remember { mutableStateOf(true) }
+
+    var repostButtonWasClicked by remember { mutableStateOf(false) }
+    var categoryButtonWasClicked by remember { mutableStateOf(false) }
+
+    val showCategoryDialog = remember { mutableStateOf(false) }
+    val showBalanceDialog = remember { mutableStateOf(false) }
 
     var textFieldIsValid by remember { mutableStateOf(true) }
     val category by categoryDialogViewModel.category.collectAsState()
     val radioOptionSelected by categoryDialogViewModel.radioOptionSelected.collectAsState()
     val radioOptions = categoryDialogViewModel.radioOptionsList
     val context = LocalContext.current
+
+    val itemsList = listOf(
+        FABItem(icon = Icons.Default.TrendingUp, text = stringResource(R.string.income)),
+        FABItem(icon = Icons.Default.TrendingDown, text = stringResource(R.string.expense)),
+        FABItem(icon = Icons.Default.Wallet, text = stringResource(R.string.balance))
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
@@ -70,15 +93,19 @@ fun MainScreen(
                     }
 
                     1 -> {
-                        TypeOptionsTopAppBar(wasClicked = repostButtonWasClicked, onClick = {
-                            repostButtonWasClicked = !repostButtonWasClicked
-                        })
+                        TypeOptionsTopAppBar(wasClicked = repostButtonWasClicked,
+                            onClick = {
+                                repostButtonWasClicked = !repostButtonWasClicked
+                            }
+                        )
                     }
 
                     2 -> {
-                        TypeOptionsTopAppBar(wasClicked = categoryButtonWasClicked, onClick = {
-                            categoryButtonWasClicked = !categoryButtonWasClicked
-                        })
+                        TypeOptionsTopAppBar(wasClicked = categoryButtonWasClicked,
+                            onClick = {
+                                categoryButtonWasClicked = !categoryButtonWasClicked
+                            }
+                        )
                     }
                 }
             })
@@ -86,18 +113,22 @@ fun MainScreen(
         floatingActionButton = {
             when (selectedItemIndex) {
                 0 -> {
-                    ExtendedFloatingActionButton(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = null
-                            )
-                        },
-                        text = {
-                            Text(text = stringResource(id = R.string.new_registration))
-                        },
-                        onClick = {
-                            onNavigatoToInsertScreen()
+                    CustomExpandableFloatingActionButton(
+                        items = itemsList,
+                        onItemClick = {
+                            when (it.text) {
+                                Type.Income.name -> {
+                                    onNavigateToInsertScreenWithIndice(0)
+                                }
+
+                                Type.Expense.name -> {
+                                    onNavigateToInsertScreenWithIndice(1)
+                                }
+
+                                else -> {
+                                    showBalanceDialog.value = !showBalanceDialog.value
+                                }
+                            }
                         }
                     )
                 }
@@ -215,6 +246,46 @@ fun MainScreen(
                             ).show()
                         }
                     }
+                }
+            )
+        }
+
+        if (showBalanceDialog.value) {
+            UpdateBalanceDialog(
+                title = stringResource(id = R.string.balance),
+                text = uiState.value,
+                textFieldUpdateValue = { newValue ->
+                    balanceViewModel.updateBalanceValueField(newValue)
+                },
+                textFieldIsValid = uiState.value.isBlank() ||
+                        balanceViewModel.validadeBalanceField(),
+                updateBalanceField = {
+                    validateBalanceField = balanceViewModel.validadeBalanceField()
+                    when {
+                        validateBalanceField -> {
+                            balanceViewModel.updateBalance()
+                            Toast.makeText(
+                                context,
+                                context.getString(
+                                    R.string.the_balance_was_saved_successfully
+                                ),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        else -> {
+                            Toast.makeText(
+                                context,
+                                context.getString(
+                                    R.string.incorrect_data_please_check_and_try_again
+                                ),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                },
+                onDimiss = {
+                    showBalanceDialog.value = !showBalanceDialog.value
                 }
             )
         }

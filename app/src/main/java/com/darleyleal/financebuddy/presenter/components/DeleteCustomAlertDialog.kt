@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presenter.screens.categories.components
+package com.darleyleal.financebuddy.presenter.components
 
 import android.content.Context
 import android.widget.Toast

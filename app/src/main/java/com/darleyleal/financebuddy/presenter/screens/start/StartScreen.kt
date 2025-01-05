@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,8 +35,10 @@ fun StartScreen(
         val startViewModel = navigationProvider.getViewModel(ViewModelKey.START) as StarViewModel
         val isAuthenticated by startViewModel.isAuthenticated.collectAsState()
 
-        if (isAuthenticated) {
-            onNavigateToHomeScreen()
+        LaunchedEffect(isAuthenticated) {
+            if (isAuthenticated) {
+                onNavigateToHomeScreen()
+            }
         }
 
         Scaffold {

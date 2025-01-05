@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">FinanceBuddy</string>
     <string name="unlock_your_cell_phone">Unlock your cell phone</string>
     <string name="use_pattern">Use pattern</string>
@@ -27,4 +27,14 @@
     <string name="dismiss">Dismiss</string>
     <string name="this_item_was_deleted">This item was deleted!</string>
     <string name="oops_no_items_to_list">Oops, no items to list :(</string>
+    <string name="select_a_income_type">Select a income type:</string>
+    <string name="select_a_expense_type">Select a expense type:</string>
+    <string name="expanded" tools:ignore="PrivateResource">Expanded</string>
+    <string name="test">Test</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="description">Description</string>
+    <string name="balance">Balance</string>
+    <string name="value">Value</string>
+    <string name="the_balance_was_saved_successfully">The balance was saved successfully!</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presenter.screens.categories.components
+package com.darleyleal.financebuddy.presenter.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme

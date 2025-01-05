@@ -8,5 +8,6 @@ enum class ViewModelKey {
     REPORTS_EXPENSES,
     START,
     INSERT,
-    NEW_CATEGORY
+    NEW_CATEGORY,
+    BALANCE
 }

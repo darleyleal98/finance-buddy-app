@@ -3,9 +3,11 @@ package com.darleyleal.financebuddy.presenter.app.utils
 import android.app.Activity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
+import com.darleyleal.financebuddy.presenter.app.MainActivity
 import com.darleyleal.financebuddy.presenter.screens.categories.category_expenses.CategoryExpensesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_incomes.CategoryIncomesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.BalanceViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.HomeViewModel
 import com.darleyleal.financebuddy.presenter.screens.insert.InsertViewModel
 import com.darleyleal.financebuddy.presenter.screens.reports.report_expenses.ReportExpensesViewModel
@@ -26,11 +28,11 @@ internal fun showSplahScreen(activity: Activity) {
     }
 }
 
-internal fun showBiometricLogin(activity: Activity) {
+internal fun showBiometricLogin(startVideModel: StarViewModel, activity: MainActivity) {
     CoroutineScope(Dispatchers.Main).launch {
         delay(3000L)
     }
-    //startViewModel.showBiometricPrompt(this)
+    startVideModel.showBiometricPrompt(activity)
 }
 
 internal fun viewModelProvider(
@@ -41,7 +43,8 @@ internal fun viewModelProvider(
     reportsExpensesViewModel: ReportExpensesViewModel,
     startViewModel: StarViewModel,
     insertViewModel: InsertViewModel,
-    newCategoryViewModel: CategoryDialogViewModel
+    newCategoryViewModel: CategoryDialogViewModel,
+    balanceViewModel: BalanceViewModel
 ): NavigationProvider {
 
     val navigationProvider = NavigationProvider(
@@ -52,7 +55,8 @@ internal fun viewModelProvider(
         reportsExpensesViewModel,
         startViewModel,
         insertViewModel,
-        newCategoryViewModel
+        newCategoryViewModel,
+        balanceViewModel
     )
 
     return navigationProvider

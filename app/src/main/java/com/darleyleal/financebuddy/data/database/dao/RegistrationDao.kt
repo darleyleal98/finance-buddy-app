@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RegistrationDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(registration: Registration)
 

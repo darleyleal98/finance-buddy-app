@@ -3,99 +3,135 @@ package com.darleyleal.financebuddy.presenter.screens.insert
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.darleyleal.financebuddy.data.local.Category
-import com.darleyleal.financebuddy.domain.enums.Type
+import com.darleyleal.financebuddy.data.local.Registration
 import com.darleyleal.financebuddy.domain.usercases.CategoryUserCase
 import com.darleyleal.financebuddy.domain.usercases.RegistrationUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class InsertViewModel @Inject constructor(
-    private val registrationUserCase: RegistrationUserCase,
+    private val insertRegistrationUseCase: RegistrationUserCase,
     private val categoryUserCase: CategoryUserCase
 ) : ViewModel() {
 
-    private val _name = MutableStateFlow("")
-    val name = _name.asStateFlow()
+    data class UiState(
+        val name: String = "",
+        val description: String = "",
+        val value: String = "",
+        val date: String = "",
+        val selectedType: String = "",
+        val category: String = "",
+        val incomes: List<Category> = emptyList(),
+        val expenses: List<Category> = emptyList(),
+        val registrations: List<Registration> = emptyList(),
+        val isLoading: Boolean = false,
+        val error: String? = null
+    )
 
-    private val _description = MutableStateFlow("")
-    val description = _description.asStateFlow()
+    private val _uiState = MutableStateFlow(UiState(isLoading = true))
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private val _value = MutableStateFlow("")
-    val value = _value.asStateFlow()
-
-    private val _date = MutableStateFlow("")
-    val date = _date.asStateFlow()
-
-    val radioOptionsList = MutableStateFlow<List<String>>(emptyList())
-    private val _radioOptionSelected = MutableStateFlow("")
-    val radioOptionSelected = _radioOptionSelected.asStateFlow()
-
-    fun updateNameTextField(newValue: String) {
-        _name.value = newValue
+    init {
+        viewModelScope.launch {
+            getAllExpenses()
+            getAllIncomes()
+        }
     }
 
-    fun updateDescriptionTextField(newValue: String) {
-        _description.value = newValue
+    fun updateName(newValue: String) {
+        _uiState.update { it.copy(name = newValue) }
     }
 
-    fun updateValueTextField(newValue: String) {
-        _value.value = newValue
+    fun updateDescription(newValue: String) {
+        _uiState.update { it.copy(description = newValue) }
     }
 
-    fun updateDateTextField(newValue: String) {
-        _date.value = newValue
+    fun updateValue(newValue: String) {
+        _uiState.update { it.copy(value = newValue) }
     }
 
-    fun updateRadioButtonTextField(newValue: String) {
-        _radioOptionSelected.value = newValue
+    fun updateDate(newValue: String) {
+        _uiState.update { it.copy(date = newValue) }
+    }
+
+    fun updateSelectedType(newValue: String) {
+        _uiState.update { it.copy(selectedType = newValue) }
+    }
+
+    fun selectCategory(category: String) {
+        _uiState.update { it.copy(category = category) }
     }
 
     fun validateFormFields(): Boolean {
-        when {
-            _name.value.trim().isEmpty() || _description.value.trim()
-                .isEmpty() || _value.value.trim().isEmpty() || _date.value.trim().isEmpty()
-            -> return false
+        val currentUiState = uiState.value
+        return with(currentUiState) {
+            name.isNotBlank() && description.isNotBlank() &&
+                    value.isNotBlank() && date.isNotBlank() && selectedType.isNotBlank()
         }
-        return true
     }
 
-    fun validateField(text: String): Boolean {
-        if (text != "") {
-            return text.trim().isNotEmpty()
+    fun clearFields() {
+        _uiState.update {
+            it.copy(
+                name = "",
+                description = "",
+                value = "",
+                date = "",
+                selectedType = "",
+                category = "",
+                error = null
+            )
         }
-        return false
     }
 
-    fun cleanFields() {
+    fun insertRegistration() {
         viewModelScope.launch {
-            delay(1000)
-            _name.value = ""
-            _description.value = ""
-            _value.value = ""
-            _date.value = ""
+            if (validateFormFields()) {
+                val currentUiState = uiState.value
+                insertRegistrationUseCase.insert(
+                    name = currentUiState.name,
+                    description = currentUiState.description,
+                    value = currentUiState.value,
+                    date = currentUiState.date,
+                    type = currentUiState.selectedType,
+                    category = currentUiState.category
+                )
+                clearFields()
+            } else {
+                _uiState.update { it.copy(error = "This field is required!") }
+            }
         }
     }
 
-    fun insert(
-        name: String, description: String, value: String,
-        date: String, type: String
-    ) {
-        if (validateFormFields()) {
-            viewModelScope.launch {
-                registrationUserCase.insert(
-                    name = name,
-                    description = description,
-                    value = value,
-                    date = date,
-                    type = type
-                )
+    private fun getAllIncomes() {
+        viewModelScope.launch {
+            categoryUserCase.getAllItemsByCategoryEqualsIncome().collect { incomes ->
+                _uiState.update {
+                    it.copy(
+                        incomes = incomes,
+                        isLoading = true
+                    )
+                }
             }
-            cleanFields()
+        }
+    }
+
+    private fun getAllExpenses() {
+        viewModelScope.launch {
+            categoryUserCase.getAllItemsByCategoryEqualsExpense().collect { expenses ->
+                _uiState.update {
+                    it.copy(
+                        expenses = expenses,
+                        isLoading = true
+                    )
+                }
+            }
         }
     }
 }

@@ -94,8 +94,15 @@ fun CustomTextField(
         },
         isError = !textFieldIsValid || !fieldIsValidate,
         singleLine = singleLine,
-        keyboardOptions = when {
-            title == "Value" -> KeyboardOptions(keyboardType = KeyboardType.Number)
+        keyboardOptions = when (title) {
+            stringResource(R.string.value) -> KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            )
+
+            stringResource(id = R.string.balance) -> KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            )
+
             else -> {
                 KeyboardOptions(keyboardType = KeyboardType.Text)
             }

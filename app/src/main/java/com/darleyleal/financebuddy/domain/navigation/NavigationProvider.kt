@@ -5,6 +5,7 @@ import com.darleyleal.financebuddy.domain.enums.ViewModelKey
 import com.darleyleal.financebuddy.presenter.screens.categories.category_expenses.CategoryExpensesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_incomes.CategoryIncomesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.BalanceViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.HomeViewModel
 import com.darleyleal.financebuddy.presenter.screens.insert.InsertViewModel
 import com.darleyleal.financebuddy.presenter.screens.reports.report_expenses.ReportExpensesViewModel
@@ -20,7 +21,8 @@ class NavigationProvider @Inject constructor(
     reportsExpensesViewModel: ReportExpensesViewModel,
     startViewModel: StarViewModel,
     insertViewModel: InsertViewModel,
-    newCategoryViewModel: CategoryDialogViewModel
+    newCategoryViewModel: CategoryDialogViewModel,
+    balanceViewModel: BalanceViewModel
 ) : ViewModel() {
 
     private val viewModels: Map<ViewModelKey, ViewModel> = mapOf(
@@ -31,7 +33,8 @@ class NavigationProvider @Inject constructor(
         ViewModelKey.REPORTS_EXPENSES to reportsExpensesViewModel,
         ViewModelKey.START to startViewModel,
         ViewModelKey.INSERT to insertViewModel,
-        ViewModelKey.NEW_CATEGORY to newCategoryViewModel
+        ViewModelKey.NEW_CATEGORY to newCategoryViewModel,
+        ViewModelKey.BALANCE to balanceViewModel
     )
 
     fun getViewModel(key: ViewModelKey): ViewModel {

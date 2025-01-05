@@ -1,13 +1,18 @@
 package com.darleyleal.financebuddy.domain.usercases
 
-import com.darleyleal.financebuddy.data.local.Registration
 import com.darleyleal.financebuddy.data.database.repository.RegistrationRepository
+import com.darleyleal.financebuddy.data.local.Registration
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class RegistrationUserCase @Inject constructor(private val repository: RegistrationRepository) {
     suspend fun insert(
-        name: String, description: String, value: String, date: String, type: String
+        name: String,
+        description: String,
+        value: String,
+        date: String,
+        type: String,
+        category: String
     ) {
         repository.insert(
             Registration(
@@ -15,7 +20,8 @@ class RegistrationUserCase @Inject constructor(private val repository: Registrat
                 description = description,
                 value = value.replace(",", ".").toFloat(),
                 date = date,
-                type = type
+                type = type,
+                category = category
             )
         )
     }

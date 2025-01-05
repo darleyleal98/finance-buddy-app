@@ -1,9 +1,9 @@
-package com.darleyleal.financebuddy.presenter.screens.categories.components
+package com.darleyleal.financebuddy.presenter.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -12,32 +12,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.darleyleal.financebuddy.R
-import com.darleyleal.financebuddy.presenter.components.CustomTextField
 
 @Composable
-fun EditCustDialog(
-    title: String,
-    textFieldIsValid: Boolean,
-    textFieldUpdateValue: (String) -> Unit,
-    text: String,
+fun UpdateBalanceDialog(
     modifier: Modifier = Modifier,
-    onDismiss: () -> Unit,
-    editCategoryField: () -> Unit
+    title: String,
+    text: String,
+    textFieldUpdateValue: (String) -> Unit,
+    textFieldIsValid: Boolean,
+    updateBalanceField: () -> Unit,
+    onDimiss: () -> Unit,
 ) {
     AlertDialog(
         title = {
             Text(
-                text = title,
-                modifier = modifier.fillMaxWidth(),
+                text = title, modifier = modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
         },
         text = {
             Column {
                 CustomTextField(
-                    title = stringResource(id = R.string.category),
+                    title = stringResource(id = R.string.balance),
                     text = text,
-                    icon = Icons.Filled.Edit,
+                    icon = Icons.Filled.Wallet,
                     singleLine = true,
                     updateTextValue = {
                         textFieldUpdateValue(it)
@@ -47,21 +45,25 @@ fun EditCustDialog(
             }
         },
         onDismissRequest = {
-            onDismiss()
+            onDimiss()
         },
         confirmButton = {
             TextButton(
                 onClick = {
-                    editCategoryField()
-                }) {
-                Text(text = "Confirm")
+                    updateBalanceField()
+                    onDimiss()
+                }
+            ) {
+                Text(text = stringResource(id = R.string.confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = {
-                onDismiss()
-            }) {
-                Text(text = "Dismiss")
+            TextButton(
+                onClick = {
+                    onDimiss()
+                }
+            ) {
+                Text(text = stringResource(id = R.string.cancel))
             }
         }
     )

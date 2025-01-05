@@ -15,6 +15,7 @@ import com.darleyleal.financebuddy.presenter.app.utils.viewModelProvider
 import com.darleyleal.financebuddy.presenter.screens.categories.category_expenses.CategoryExpensesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_incomes.CategoryIncomesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.BalanceViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.HomeViewModel
 import com.darleyleal.financebuddy.presenter.screens.insert.InsertViewModel
 import com.darleyleal.financebuddy.presenter.screens.reports.report_expenses.ReportExpensesViewModel
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val startViewModel: StarViewModel by viewModels()
         val insertViewModel: InsertViewModel by viewModels()
         val newCategoryViewModel: CategoryDialogViewModel by viewModels()
+        val balanceViewModel: BalanceViewModel by viewModels()
 
         val navigationProvider = viewModelProvider(
             categoryExpensesViewModel,
@@ -47,11 +49,12 @@ class MainActivity : AppCompatActivity() {
             reportsExpensesViewModel,
             startViewModel,
             insertViewModel,
-            newCategoryViewModel
+            newCategoryViewModel,
+            balanceViewModel
         )
 
         showSplahScreen(this)
-        showBiometricLogin(this)
+        showBiometricLogin(startViewModel, this)
 
         setContent {
             val navController = rememberNavController()

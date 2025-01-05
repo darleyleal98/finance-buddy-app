@@ -1,9 +1,7 @@
-package com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog
+package com.darleyleal.financebuddy.presenter.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
@@ -13,22 +11,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.darleyleal.financebuddy.R
 import com.darleyleal.financebuddy.presenter.components.CustomTextField
-import com.darleyleal.financebuddy.presenter.components.RadioButtonSelection
 
 @Composable
-fun <T> CategoryDialog(
+fun EditCustDialog(
     title: String,
     textFieldIsValid: Boolean,
     textFieldUpdateValue: (String) -> Unit,
     text: String,
-    radioOptionSelected: (String) -> Unit,
-    radioOptions: List<T>,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
-    categoryFunction: () -> Unit
+    editCategoryField: () -> Unit
 ) {
     AlertDialog(
         title = {
@@ -50,13 +44,6 @@ fun <T> CategoryDialog(
                     },
                     fieldIsValidate = textFieldIsValid
                 )
-                Spacer(modifier = modifier.padding(top = 4.dp))
-                RadioButtonSelection(
-                    optionSelected = {
-                        radioOptionSelected(it)
-                    },
-                    radioButtons = radioOptions
-                )
             }
         },
         onDismissRequest = {
@@ -65,16 +52,16 @@ fun <T> CategoryDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    categoryFunction()
+                    editCategoryField()
                 }) {
-                Text(text = stringResource(id = R.string.confirm))
+                Text(text = "Confirm")
             }
         },
         dismissButton = {
             TextButton(onClick = {
                 onDismiss()
             }) {
-                Text(text = stringResource(id = R.string.cancel))
+                Text(text = "Dismiss")
             }
         }
     )

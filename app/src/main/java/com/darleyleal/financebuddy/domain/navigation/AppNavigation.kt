@@ -25,12 +25,15 @@ fun AppNavigation(
     navigationProvider: NavigationProvider
 ) {
     var selectedItemIndex by remember { mutableIntStateOf(0) }
+    var selectedIndexRegistrationScreen by remember { mutableIntStateOf(0) }
 
-    NavHost(startDestination = Routes.MainScreen.name, navController = navController) {
+    NavHost(startDestination = Routes.StartScreen.name, navController = navController) {
         composable(route = Routes.StartScreen.name) {
-            StartScreen(navigationProvider, onNavigateToHomeScreen = {
-                navController.navigate(Routes.HomeScreen.name)
-            })
+            StartScreen(navigationProvider,
+                onNavigateToHomeScreen = {
+                    navController.navigate(Routes.MainScreen.name)
+                }
+            )
         }
         composable(route = Routes.MainScreen.name) {
             MainScreen(
@@ -38,7 +41,10 @@ fun AppNavigation(
                 selectedItemIndex = selectedItemIndex,
                 selectedItemIndexUpdate = {
                     selectedItemIndex = it
-                }, onNavigatoToInsertScreen = {
+                },
+                onNavigateToInsertScreenWithIndice = {
+                    selectedIndexRegistrationScreen = it
+
                     navController.navigate(Routes.InsertScreen.name) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
@@ -61,7 +67,8 @@ fun AppNavigation(
                 navigationProvider = navigationProvider,
                 onPopBackStack = {
                     navController.popBackStack()
-                }
+                },
+                indice = selectedIndexRegistrationScreen
             )
         }
         composable(route = Routes.ReportsScreen.name) {

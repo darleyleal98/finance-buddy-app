@@ -24,8 +24,7 @@ import com.darleyleal.financebuddy.R
 fun ItemsNotFound(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .size(500.dp, 800.dp)
-            .fillMaxHeight()
+            .size(500.dp, 300.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -43,7 +42,7 @@ fun ItemsNotFound(modifier: Modifier = Modifier) {
                     Color.Black
                 }
             },
-            modifier = modifier.size(60.dp)
+            modifier = modifier.size(50.dp)
         )
         Text(
             text = stringResource(R.string.oops_no_items_to_list),

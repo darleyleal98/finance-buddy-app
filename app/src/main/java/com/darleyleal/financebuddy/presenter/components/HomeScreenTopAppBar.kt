@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presenter.screens.home.components
+package com.darleyleal.financebuddy.presenter.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,7 +46,7 @@ fun HomeScreenTopAppBar(modifier: Modifier = Modifier) {
                         fontWeight = FontWeight((400))
                     )
                 ) {
-                    append("Mate")
+                    append("Buddy")
                 }
             }
         )
