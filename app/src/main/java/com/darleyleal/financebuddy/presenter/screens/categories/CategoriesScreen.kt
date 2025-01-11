@@ -44,13 +44,8 @@ fun CategoriesScreen(
             )
 
             when (wasClicked) {
-                true -> {
-                    CategoryIncomes(navigationProvider = navigationProvider)
-                }
-
-                else -> {
-                    CategoryExpenses(navigationProvider = navigationProvider)
-                }
+                true -> CategoryIncomes(navigationProvider = navigationProvider)
+                else -> CategoryExpenses(navigationProvider = navigationProvider)
             }
         }
     }

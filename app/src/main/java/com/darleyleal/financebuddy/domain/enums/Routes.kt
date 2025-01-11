@@ -4,7 +4,7 @@ enum class Routes {
     StartScreen,
     HomeScreen,
     CategoriesScreen,
-    ReportsScreen,
+    AnalyticsScreen,
     InsertScreen,
     MainScreen
 }

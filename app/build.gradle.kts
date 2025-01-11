@@ -73,6 +73,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
     implementation("androidx.compose.material:material-icons-extended:$1.4.3")
     //noinspection UseTomlInstead
     implementation("androidx.biometric:biometric:1.1.0")
@@ -96,8 +97,10 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
 
     implementation("androidx.compose.ui:ui-text-google-fonts:1.5.0")
-
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5")
+
+    val latest_release = "Beta-0.0.5"
+    implementation("io.github.thechance101:chart:$latest_release")
 }

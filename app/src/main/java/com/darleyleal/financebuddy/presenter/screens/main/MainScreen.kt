@@ -1,7 +1,10 @@
 package com.darleyleal.financebuddy.presenter.screens.main
 
 import android.widget.Toast
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.TrendingDown
@@ -25,9 +28,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.darleyleal.financebuddy.R
 import com.darleyleal.financebuddy.domain.enums.Type
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
@@ -41,9 +48,9 @@ import com.darleyleal.financebuddy.presenter.components.UpdateBalanceDialog
 import com.darleyleal.financebuddy.presenter.screens.categories.CategoriesScreen
 import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialog
 import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
-import com.darleyleal.financebuddy.presenter.screens.home.BalanceViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.CardInformationViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.HomeScreen
-import com.darleyleal.financebuddy.presenter.screens.reports.ReportScreen
+import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,12 +67,11 @@ fun MainScreen(
 
     val balanceViewModel = navigationProvider.getViewModel(
         ViewModelKey.BALANCE
-    ) as BalanceViewModel
+    ) as CardInformationViewModel
 
     val uiState by balanceViewModel.uiState.collectAsState()
     var validateBalanceField by remember { mutableStateOf(true) }
 
-    var repostButtonWasClicked by remember { mutableStateOf(false) }
     var categoryButtonWasClicked by remember { mutableStateOf(false) }
 
     val showCategoryDialog = remember { mutableStateOf(false) }
@@ -93,11 +99,21 @@ fun MainScreen(
                     }
 
                     1 -> {
-                        TypeOptionsTopAppBar(wasClicked = repostButtonWasClicked,
-                            onClick = {
-                                repostButtonWasClicked = !repostButtonWasClicked
-                            }
-                        )
+                        Row {
+                            Text(
+                                text = stringResource(R.string.analytics),
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.W500,
+                                modifier = modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                                textAlign = TextAlign.Center,
+                                color = when {
+                                    isSystemInDarkTheme() -> Color.Cyan
+                                    else -> Color.Black
+                                }
+                            )
+                        }
                     }
 
                     2 -> {
@@ -188,7 +204,7 @@ fun MainScreen(
             }
 
             1 -> {
-                ReportScreen(
+                AnalyticsScreen(
                     navigationProvider = navigationProvider,
                     paddingValues = it
                 )

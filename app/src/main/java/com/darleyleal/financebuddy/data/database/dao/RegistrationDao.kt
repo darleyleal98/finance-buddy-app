@@ -26,9 +26,9 @@ interface RegistrationDao {
     @Query("SELECT * FROM registrations")
     fun getAllRegistrations(): Flow<List<Registration>>
 
-    @Query("SELECT * FROM registrations WHERE type = 'Income'")
+    @Query("SELECT * FROM registrations WHERE category = 'Income'")
     fun getAllRegistrationEqualsIncome(): Flow<List<Registration>>
 
-    @Query("SELECT * FROM registrations WHERE type = 'Expense'")
+    @Query("SELECT * FROM registrations WHERE category = 'Expense'")
     fun getAllRegistrationEqualsExpense(): Flow<List<Registration>>
 }

@@ -42,7 +42,9 @@ fun CardInformation(
     modifier: Modifier = Modifier,
     onClickVisibilityButton: () -> Unit,
     valuesIsVisible: Boolean,
-    balance: Balance?
+    balance: Balance?,
+    income: String,
+    expanse: String
 ) {
     Card(
         elevation = CardDefaults.cardElevation(
@@ -109,7 +111,7 @@ fun CardInformation(
                     )
                 }
                 Text(
-                    text = if (valuesIsVisible) "$0,00" else "*****",
+                    text = if (valuesIsVisible) income else "*****",
                     fontSize = 22.sp,
                     modifier = modifier.align(Alignment.CenterVertically)
                 )
@@ -132,7 +134,7 @@ fun CardInformation(
                     )
                 }
                 Text(
-                    text = if (valuesIsVisible) "$0,00" else "*****", fontSize = 22.sp,
+                    text = if (valuesIsVisible) expanse else "*****", fontSize = 22.sp,
                     modifier = modifier.align(Alignment.CenterVertically)
                 )
             }

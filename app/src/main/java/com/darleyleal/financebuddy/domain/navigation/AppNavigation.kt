@@ -15,7 +15,7 @@ import com.darleyleal.financebuddy.presenter.screens.categories.CategoriesScreen
 import com.darleyleal.financebuddy.presenter.screens.home.HomeScreen
 import com.darleyleal.financebuddy.presenter.screens.insert.InsertScreen
 import com.darleyleal.financebuddy.presenter.screens.main.MainScreen
-import com.darleyleal.financebuddy.presenter.screens.reports.ReportScreen
+import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsScreen
 import com.darleyleal.financebuddy.presenter.screens.start.StartScreen
 
 @Composable
@@ -71,8 +71,8 @@ fun AppNavigation(
                 indice = selectedIndexRegistrationScreen
             )
         }
-        composable(route = Routes.ReportsScreen.name) {
-            ReportScreen(
+        composable(route = Routes.AnalyticsScreen.name) {
+            AnalyticsScreen(
                 paddingValues = paddingValues,
                 navigationProvider = navigationProvider
             )

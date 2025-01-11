@@ -20,8 +20,8 @@ val bottonNavigationItems = listOf(
         icon = Icons.Default.Home
     ),
     BottomNavigationRoute(
-        route = Routes.ReportsScreen.name,
-        label = "Report",
+        route = Routes.AnalyticsScreen.name,
+        label = "Analytics",
         icon = Icons.Default.BarChart
     ),
     BottomNavigationRoute(

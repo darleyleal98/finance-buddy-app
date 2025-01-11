@@ -7,11 +7,10 @@ import com.darleyleal.financebuddy.presenter.app.MainActivity
 import com.darleyleal.financebuddy.presenter.screens.categories.category_expenses.CategoryExpensesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_incomes.CategoryIncomesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
-import com.darleyleal.financebuddy.presenter.screens.home.BalanceViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.CardInformationViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.HomeViewModel
 import com.darleyleal.financebuddy.presenter.screens.insert.InsertViewModel
-import com.darleyleal.financebuddy.presenter.screens.reports.report_expenses.ReportExpensesViewModel
-import com.darleyleal.financebuddy.presenter.screens.reports.reports_incomes.ReportsIncomesViewModel
+import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsViewModel
 import com.darleyleal.financebuddy.presenter.screens.start.StarViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,20 +38,18 @@ internal fun viewModelProvider(
     categoryExpensesViewModel: CategoryExpensesViewModel,
     categoryIncomesViewModel: CategoryIncomesViewModel,
     homeViewModel: HomeViewModel,
-    reportsIncomesViewModel: ReportsIncomesViewModel,
-    reportsExpensesViewModel: ReportExpensesViewModel,
+    analytics: AnalyticsViewModel,
     startViewModel: StarViewModel,
     insertViewModel: InsertViewModel,
     newCategoryViewModel: CategoryDialogViewModel,
-    balanceViewModel: BalanceViewModel
+    balanceViewModel: CardInformationViewModel
 ): NavigationProvider {
 
     val navigationProvider = NavigationProvider(
         categoryExpensesViewModel,
         categoryIncomesViewModel,
         homeViewModel,
-        reportsIncomesViewModel,
-        reportsExpensesViewModel,
+        analytics,
         startViewModel,
         insertViewModel,
         newCategoryViewModel,

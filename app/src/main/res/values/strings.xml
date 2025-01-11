@@ -37,4 +37,9 @@
     <string name="balance">Balance</string>
     <string name="value">Value</string>
     <string name="the_balance_was_saved_successfully">The balance was saved successfully!</string>
+    <string name="by_category">By Category</string>
+    <string name="analytics">Analytics</string>
+    <string name="my_history">My History</string>
+    <string name="per_month">Per Month</string>
+    <string name="no_data">No data</string>
 </resources>

@@ -18,9 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.darleyleal.financebuddy.R
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
 import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
 import com.darleyleal.financebuddy.presenter.components.CardInformation
@@ -36,7 +38,7 @@ fun HomeScreen(
     val homeViewModel = navigationProvider.getViewModel(ViewModelKey.HOME) as HomeViewModel
     val registrationsList by homeViewModel.uiState.collectAsState()
 
-    val balanceViewModel = navigationProvider.getViewModel(ViewModelKey.BALANCE) as BalanceViewModel
+    val balanceViewModel = navigationProvider.getViewModel(ViewModelKey.BALANCE) as CardInformationViewModel
     val uiState by balanceViewModel.uiState.collectAsState()
 
     var cardValuesIsVisible by remember { mutableStateOf(true) }
@@ -48,14 +50,16 @@ fun HomeScreen(
             balance = uiState.balance,
             onClickVisibilityButton = {
                 cardValuesIsVisible = !cardValuesIsVisible
-            }
+            },
+            income = balanceViewModel.calculateValueAllIncomes(),
+            expanse = balanceViewModel.calculateValueAllExpenses(),
         )
 
         Text(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(32.dp),
-            text = "My History",
+            text = stringResource(R.string.my_history),
             textAlign = TextAlign.Center,
             fontSize = 22.sp,
             color = when {
