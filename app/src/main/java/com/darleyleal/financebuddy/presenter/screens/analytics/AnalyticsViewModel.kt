@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.darleyleal.financebuddy.data.local.Registration
 import com.darleyleal.financebuddy.domain.enums.Type
 import com.darleyleal.financebuddy.domain.usercases.RegistrationUserCase
+import com.darleyleal.financebuddy.domain.usercases.utils.formatMonthAndYear
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -18,9 +20,11 @@ import javax.inject.Inject
 class AnalyticsViewModel @Inject constructor(
     private val registrationUserCase: RegistrationUserCase
 ) : ViewModel() {
+
     init {
         getAllExpenses()
         getAllIncomes()
+        getAllRegistrations()
     }
 
     private val _incomesListRegistrations = MutableStateFlow<List<Registration>>(
@@ -30,6 +34,9 @@ class AnalyticsViewModel @Inject constructor(
     private val _expensesListRegistrations = MutableStateFlow<List<Registration>>(
         emptyList()
     )
+
+    private val _registrations = MutableStateFlow<List<Registration>>(emptyList())
+    val registrations = _registrations.asStateFlow()
 
     val charData = combine(
         _incomesListRegistrations, _expensesListRegistrations
@@ -70,6 +77,14 @@ class AnalyticsViewModel @Inject constructor(
         }
     }
 
+    private fun getAllRegistrations() {
+        viewModelScope.launch {
+            registrationUserCase.getAllRegistrations().collect {
+                _registrations.value = it
+            }
+        }
+    }
+
     private fun groupRegistrationsByMonth(
         incomes: List<Registration>, expenses: List<Registration>
     ): Map<String, List<Registration>> {
@@ -78,7 +93,7 @@ class AnalyticsViewModel @Inject constructor(
 
         return allRegistrations.groupBy { registration ->
             val (day, month, year) = registration.date.split("/")
-           convertDate(month, year)
+           formatMonthAndYear(month, year)
         }
     }
 
@@ -112,24 +127,5 @@ class AnalyticsViewModel @Inject constructor(
         val expenses = monthlyTotals.values.map { it.second }.toList()
 
         return Triple(incomes, expenses, months)
-    }
-
-    private fun convertDate(month: String, year: String): String {
-        var date = ""
-        when (month) {
-            "01" -> date = "Jan, ${year.substring(year.length - 2)}"
-            "02" -> date = "Feb, ${year.substring(year.length - 2)}"
-            "03" -> date = "Mar, ${year.substring(year.length - 2)}"
-            "04" -> date = "Apr, ${year.substring(year.length - 2)}"
-            "05" -> date = "May, ${year.substring(year.length - 2)}"
-            "06" -> date = "Jun, ${year.substring(year.length - 2)}"
-            "07" -> date = "Jul, ${year.substring(year.length - 2)}"
-            "08" -> date = "Aug, ${year.substring(year.length - 2)}"
-            "09" -> date = "Sep, ${year.substring(year.length - 2)}"
-            "10" -> date = "Oct, ${year.substring(year.length - 2)}"
-            "11" -> date = "Nov, ${year.substring(year.length - 2)}"
-            "12" -> date = "Dec, ${year.substring(year.length - 2)}"
-        }
-        return date
     }
 }

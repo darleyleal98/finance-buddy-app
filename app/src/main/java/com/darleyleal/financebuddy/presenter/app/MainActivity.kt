@@ -1,6 +1,7 @@
 package com.darleyleal.financebuddy.presenter.app
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,20 +13,24 @@ import com.darleyleal.financebuddy.domain.navigation.AppNavigation
 import com.darleyleal.financebuddy.presenter.app.utils.showBiometricLogin
 import com.darleyleal.financebuddy.presenter.app.utils.showSplahScreen
 import com.darleyleal.financebuddy.presenter.app.utils.viewModelProvider
+import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_expenses.CategoryExpensesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_incomes.CategoryIncomesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.CardInformationViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.HomeViewModel
 import com.darleyleal.financebuddy.presenter.screens.insert.InsertViewModel
-import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsViewModel
 import com.darleyleal.financebuddy.presenter.screens.start.StarViewModel
 import com.darleyleal.financebuddy.presenter.theme.FinanceBuddyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "RestrictedApi")
+    @SuppressLint(
+        "UnusedMaterial3ScaffoldPaddingParameter",
+        "RestrictedApi",
+        "SourceLockedOrientationActivity"
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,6 +59,8 @@ class MainActivity : AppCompatActivity() {
         showBiometricLogin(startViewModel, this)
 
         setContent {
+            requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
+
             val navController = rememberNavController()
             FinanceBuddyTheme {
                 Scaffold {

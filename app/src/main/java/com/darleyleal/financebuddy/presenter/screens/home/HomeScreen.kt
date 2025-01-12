@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,7 +39,8 @@ fun HomeScreen(
     val homeViewModel = navigationProvider.getViewModel(ViewModelKey.HOME) as HomeViewModel
     val registrationsList by homeViewModel.uiState.collectAsState()
 
-    val balanceViewModel = navigationProvider.getViewModel(ViewModelKey.BALANCE) as CardInformationViewModel
+    val balanceViewModel =
+        navigationProvider.getViewModel(ViewModelKey.BALANCE) as CardInformationViewModel
     val uiState by balanceViewModel.uiState.collectAsState()
 
     var cardValuesIsVisible by remember { mutableStateOf(true) }
@@ -72,6 +74,8 @@ fun HomeScreen(
                 }
             }
         )
+
+
 
         Column(
             modifier = modifier

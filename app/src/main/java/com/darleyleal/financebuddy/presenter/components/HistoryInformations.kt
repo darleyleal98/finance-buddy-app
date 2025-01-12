@@ -50,7 +50,6 @@ fun HistoryInformations(registration: Registration, modifier: Modifier = Modifie
             expand = !expand
         }
     ) {
-
         Row(
             modifier = modifier
                 .padding(8.dp)
