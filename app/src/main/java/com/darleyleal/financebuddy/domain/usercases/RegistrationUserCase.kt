@@ -7,12 +7,8 @@ import javax.inject.Inject
 
 class RegistrationUserCase @Inject constructor(private val repository: RegistrationRepository) {
     suspend fun insert(
-        name: String,
-        description: String,
-        value: String,
-        date: String,
-        type: String,
-        category: String
+        name: String, description: String, value: String,
+        date: String, type: String, category: String
     ) {
         repository.insert(
             Registration(
@@ -26,8 +22,21 @@ class RegistrationUserCase @Inject constructor(private val repository: Registrat
         )
     }
 
-    suspend fun update(registration: Registration) {
-        repository.update(registration)
+    suspend fun update(
+        id: Long, name: String, description: String,
+        value: String, date: String, category: String, type: String
+    ) {
+        repository.update(
+            Registration(
+                id = id,
+                name = name,
+                description = description,
+                value = value.replace(",", ".").toFloat(),
+                date = date,
+                category = category,
+                type = type
+            )
+        )
     }
 
     suspend fun delete(registration: Registration) {

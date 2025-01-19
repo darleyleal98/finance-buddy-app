@@ -12,11 +12,7 @@ class CategoyRepository @Inject constructor(
     private val categoryDao: CategoryDao
 ) {
     suspend fun insert(category: Category) = categoryDao.insert(category)
-
-    suspend fun update(id: Long, name: String) {
-        categoryDao.update(id, name)
-    }
-
+    suspend fun update(category: Category) = categoryDao.update(category)
     suspend fun delete(category: Category) = categoryDao.delete(category)
 
     fun getAllCategories(): Flow<List<Category>> {

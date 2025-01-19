@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
@@ -80,7 +80,7 @@ fun InsertScreen(
                             viewModel.clearFields()
                         }) {
                             Icon(
-                                imageVector = Icons.Filled.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = null
                             )
                         }
@@ -126,11 +126,10 @@ fun InsertScreen(
                         .verticalScroll(scrollState)
                         .imePadding()
                         .navigationBarsPadding()
-
                 ) {
                     Spacer(modifier = modifier.padding(8.dp))
 
-                    CustomTextField(title = "Name",
+                    CustomTextField(title = stringResource(R.string.name),
                         text = uiState.name,
                         icon = Icons.Filled.Edit,
                         singleLine = true,
@@ -141,7 +140,7 @@ fun InsertScreen(
                     )
 
                     CustomTextField(
-                        title = "Description",
+                        title = stringResource(R.string.description),
                         text = uiState.description,
                         icon = Icons.Filled.Description, singleLine = false,
                         fieldIsValidate = validateFields || viewModel.validateFormFields(),
@@ -150,7 +149,7 @@ fun InsertScreen(
                         }
                     )
 
-                    CustomTextField(title = "Value",
+                    CustomTextField(title = stringResource(R.string.value),
                         text = uiState.value,
                         icon = Icons.Filled.AttachMoney, singleLine = true,
                         fieldIsValidate = validateFields || viewModel.validateFormFields(),
@@ -160,7 +159,7 @@ fun InsertScreen(
                     )
 
                     DatePickerField(
-                        title = "Date",
+                        title = stringResource(R.string.date),
                         text = uiState.date,
                         fieldIsValidate = validateFields || viewModel.validateFormFields(),
                         icon = Icons.Filled.DateRange,

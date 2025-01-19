@@ -11,11 +11,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.darleyleal.financebuddy.domain.enums.Routes
-import com.darleyleal.financebuddy.presenter.screens.categories.CategoriesScreen
+import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsScreen
+import com.darleyleal.financebuddy.presenter.screens.categories.CategoryScreen
 import com.darleyleal.financebuddy.presenter.screens.home.HomeScreen
 import com.darleyleal.financebuddy.presenter.screens.insert.InsertScreen
 import com.darleyleal.financebuddy.presenter.screens.main.MainScreen
-import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsScreen
 import com.darleyleal.financebuddy.presenter.screens.start.StartScreen
 
 @Composable
@@ -44,14 +44,7 @@ fun AppNavigation(
                 },
                 onNavigateToInsertScreenWithIndice = {
                     selectedIndexRegistrationScreen = it
-
-                    navController.navigate(Routes.InsertScreen.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate(Routes.InsertScreen.name)
                 }
             )
         }
@@ -78,7 +71,7 @@ fun AppNavigation(
             )
         }
         composable(route = Routes.CategoriesScreen.name) {
-            CategoriesScreen(
+            CategoryScreen(
                 navigationProvider = navigationProvider,
                 paddingValues = paddingValues
             )

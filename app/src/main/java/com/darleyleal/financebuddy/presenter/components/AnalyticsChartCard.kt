@@ -1,12 +1,10 @@
 package com.darleyleal.financebuddy.presenter.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,9 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aay.compose.barChart.BarChart
 import com.aay.compose.barChart.model.BarParameters
-import com.aay.compose.lineChart.LineChart
-import com.aay.compose.lineChart.model.LineParameters
-import com.aay.compose.lineChart.model.LineType
 import com.darleyleal.financebuddy.R
 
 @Composable
@@ -26,18 +21,8 @@ fun AnalyticsChart(
     modifier: Modifier = Modifier,
     monthsList: List<String>,
     incomesList: List<Double>,
-    expensesList: List<Double>,
+    expensesList: List<Double>
 ) {
-    if (monthsList.isEmpty() || incomesList.isEmpty() || expensesList.isEmpty()) {
-        Box(modifier) {
-            Text(
-                text = stringResource(R.string.no_data),
-                color = if (isSystemInDarkTheme()) Color.White else Color.Black
-            )
-        }
-        return
-    }
-
     val lineParameters = listOf(
         BarParameters(
             dataName = stringResource(id = R.string.income),

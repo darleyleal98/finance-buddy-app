@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presenter.screens.home
+package com.darleyleal.financebuddy.presenter.screens.home.card_information
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

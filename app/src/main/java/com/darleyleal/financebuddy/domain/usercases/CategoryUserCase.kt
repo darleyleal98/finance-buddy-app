@@ -12,8 +12,8 @@ class CategoryUserCase @Inject constructor(
         repository.insert(Category(name = name, type = type))
     }
 
-    suspend fun update(id: Long, name: String) {
-        repository.update(id, name)
+    suspend fun update(id: Long, name: String, type: String) {
+        repository.update(Category(id, name, type))
     }
 
     suspend fun delete(category: Category) {

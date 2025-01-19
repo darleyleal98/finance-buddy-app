@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.SearchBar
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,11 +24,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.darleyleal.financebuddy.R
+import com.darleyleal.financebuddy.data.local.Registration
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
 import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
-import com.darleyleal.financebuddy.presenter.components.CardInformation
 import com.darleyleal.financebuddy.presenter.components.HistoryInformations
+import com.darleyleal.financebuddy.presenter.components.RemoveItemDialog
+import com.darleyleal.financebuddy.presenter.screens.home.card_information.CardInformation
+import com.darleyleal.financebuddy.presenter.screens.home.card_information.CardInformationViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.update_registration.UpdateRegistrationModalBottomSheet
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
@@ -37,19 +42,22 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     val homeViewModel = navigationProvider.getViewModel(ViewModelKey.HOME) as HomeViewModel
-    val registrationsList by homeViewModel.uiState.collectAsState()
+    val homeViewModelUiState by homeViewModel.uiState.collectAsState()
 
     val balanceViewModel =
         navigationProvider.getViewModel(ViewModelKey.BALANCE) as CardInformationViewModel
-    val uiState by balanceViewModel.uiState.collectAsState()
+    val BalanaceViewModelUiState by balanceViewModel.uiState.collectAsState()
 
     var cardValuesIsVisible by remember { mutableStateOf(true) }
-    val scrollState = rememberScrollState()
+    var deleteRegistrationItemSelected by remember { mutableStateOf<Registration?>(null) }
+    var removeItem by remember { mutableStateOf(false) }
+
+    var showBottonSheet by remember { mutableStateOf(false) }
 
     Column(modifier.padding(paddingValues)) {
         CardInformation(
             valuesIsVisible = cardValuesIsVisible,
-            balance = uiState.balance,
+            balance = BalanaceViewModelUiState.balance,
             onClickVisibilityButton = {
                 cardValuesIsVisible = !cardValuesIsVisible
             },
@@ -75,15 +83,79 @@ fun HomeScreen(
             }
         )
 
+        when {
+            homeViewModelUiState.registrations.isEmpty() -> {
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = stringResource(R.string.no_registrations_found),
+                    textAlign = TextAlign.Center
+                )
+            }
 
+            else -> {
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Adaptive(300.dp),
+                    content = {
+                        items(homeViewModelUiState.registrations) { item ->
+                            HistoryInformations(registration = item,
+                                onDeleteItem = { registration ->
+                                    deleteRegistrationItemSelected = registration
+                                },
+                                registrationId = { id ->
+                                    homeViewModel.getRegistrationById(id)
+                                },
+                                showDeleteDialog = {
+                                    removeItem = it
+                                },
+                                showUpdateRegistrationButtonSheet = {
+                                    showBottonSheet = it
+                                }
+                            )
+                        }
+                    }
+                )
+            }
+        }
 
-        Column(
-            modifier = modifier
-                .size(width = 600.dp, height = 532.dp)
-                .verticalScroll(scrollState)
-        ) {
-            registrationsList.registrations.forEach {
-                HistoryInformations(registration = it)
+        when {
+            removeItem -> {
+                RemoveItemDialog(
+                    onDismissRequest = {
+                        removeItem = !removeItem
+                    },
+                    onConfirmation = {
+                        deleteRegistrationItemSelected?.let {
+                            homeViewModel.delete(it)
+                        }
+                    },
+                    dialogTitle = stringResource(R.string.are_you_sure_about_this),
+                    dialogText = stringResource(R.string.delete_item),
+                )
+            }
+
+            showBottonSheet -> {
+                homeViewModelUiState.registration?.let {
+                    UpdateRegistrationModalBottomSheet(
+                        showBottonSheet = showBottonSheet,
+                        updateStateBottonSheet = { showBotton ->
+                            showBottonSheet = showBotton
+                        },
+                        viewModel = homeViewModel,
+                        registration = it,
+                        onUpdateRegistrationClick = {
+                            homeViewModel.updateRegistration(
+                                homeViewModelUiState.id,
+                                homeViewModelUiState.name,
+                                homeViewModelUiState.description,
+                                homeViewModelUiState.value,
+                                homeViewModelUiState.date,
+                                homeViewModelUiState.category,
+                                homeViewModelUiState.type
+                            )
+                            showBottonSheet = false
+                        }
+                    )
+                }
             }
         }
     }

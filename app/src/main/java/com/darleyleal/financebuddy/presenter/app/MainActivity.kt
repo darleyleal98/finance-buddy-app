@@ -16,8 +16,8 @@ import com.darleyleal.financebuddy.presenter.app.utils.viewModelProvider
 import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_expenses.CategoryExpensesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_incomes.CategoryIncomesViewModel
-import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
-import com.darleyleal.financebuddy.presenter.screens.home.CardInformationViewModel
+import com.darleyleal.financebuddy.presenter.screens.categories.CategoryViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.card_information.CardInformationViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.HomeViewModel
 import com.darleyleal.financebuddy.presenter.screens.insert.InsertViewModel
 import com.darleyleal.financebuddy.presenter.screens.start.StarViewModel
@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
         val analyticsViewModel: AnalyticsViewModel by viewModels()
         val startViewModel: StarViewModel by viewModels()
         val insertViewModel: InsertViewModel by viewModels()
-        val newCategoryViewModel: CategoryDialogViewModel by viewModels()
+        val newCategoryViewModel: CategoryViewModel by viewModels()
         val balanceViewModel: CardInformationViewModel by viewModels()
-
+        
         val navigationProvider = viewModelProvider(
             categoryExpensesViewModel,
             categoryIncomesViewModel,

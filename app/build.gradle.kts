@@ -56,6 +56,7 @@ android {
 dependencies {
     val nav_version = "2.8.0"
     val lifecycle_version = "2.8.5"
+    val latest_release = "Beta-0.0.5"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -64,7 +65,6 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -104,6 +104,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5")
 
-    val latest_release = "Beta-0.0.5"
     implementation("io.github.thechance101:chart:$latest_release")
+
+    implementation("androidx.compose.material3:material3:1.1.1")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 }

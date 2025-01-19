@@ -11,7 +11,7 @@ import com.darleyleal.financebuddy.data.local.Registration
 
 @Database(
     entities = [Registration::class, Category::class, Balance::class],
-    version = 4, exportSchema = false
+    version = 8, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun registrationDao(): RegistrationDao

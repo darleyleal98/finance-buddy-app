@@ -1,10 +1,8 @@
 package com.darleyleal.financebuddy.presenter.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,8 +12,9 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,13 +25,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.darleyleal.financebuddy.data.local.Category
 
 @Composable
 fun CategoryItemCard(
     modifier: Modifier = Modifier,
-    title: String,
-    onClickEditCategory: () -> Unit,
-    onClickDeleteItem: () -> Unit
+    category: Category,
+    onClickEditCategory: (Category, Boolean) -> Unit,
+    onClickDeleteItem: (Category, Boolean) -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -52,7 +52,7 @@ fun CategoryItemCard(
         ) {
             Row(modifier = modifier.padding(start = 16.dp)) {
                 Text(
-                    text = title,
+                    text = category.name.lowercase().replaceFirstChar { it.titlecase() },
                     fontSize = 20.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -61,21 +61,24 @@ fun CategoryItemCard(
                 )
             }
             Row(modifier = modifier.padding(end = 16.dp)) {
-                Icon(
-                    modifier = modifier.clickable {
-                        onClickEditCategory()
+                IconButton(
+                    onClick = {
+                        onClickEditCategory(category, true)
                     },
-                    imageVector = Icons.Filled.Edit, contentDescription = null
+                    content = {
+                        Icon(imageVector = Icons.Filled.Edit, contentDescription = null)
+                    }
                 )
-                Spacer(modifier = modifier.padding(start = 22.dp))
-                Icon(
-                    modifier = modifier.clickable {
-                        onClickDeleteItem()
+                IconButton(
+                    onClick = {
+                        onClickDeleteItem(category, true)
                     },
-                    imageVector = Icons.Filled.Delete, contentDescription = null
+                    content = {
+                        Icon(imageVector = Icons.Filled.Delete, contentDescription = null)
+                    }
                 )
             }
         }
     }
-    Divider()
+    HorizontalDivider()
 }

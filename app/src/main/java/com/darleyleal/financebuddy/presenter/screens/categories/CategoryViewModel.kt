@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog
+package com.darleyleal.financebuddy.presenter.screens.categories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryDialogViewModel @Inject constructor(
+class CategoryViewModel @Inject constructor(
     private val categoryUserCase: CategoryUserCase
 ) : ViewModel() {
 

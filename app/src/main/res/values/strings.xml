@@ -42,4 +42,11 @@
     <string name="my_history">My History</string>
     <string name="per_month">Per Month</string>
     <string name="no_data">No data</string>
+    <string name="history_by_date">History by date</string>
+    <string name="no_registrations_found">No registrations found</string>
+    <string name="update_registration">Update Registration</string>
+    <string name="name">Name</string>
+    <string name="date">Date</string>
+    <string name="new_category">New Category</string>
+    <string name="click_to_confirm_category">Click to confirm category</string>
 </resources>

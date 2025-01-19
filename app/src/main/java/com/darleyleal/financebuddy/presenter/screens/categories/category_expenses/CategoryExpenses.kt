@@ -9,9 +9,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
+import com.darleyleal.financebuddy.R
+import com.darleyleal.financebuddy.data.local.Category
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
+import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
 import com.darleyleal.financebuddy.presenter.components.CategorySection
+import com.darleyleal.financebuddy.presenter.components.EditCategoryNameBottomSheet
+import com.darleyleal.financebuddy.presenter.components.RemoveItemDialog
 import com.darleyleal.financebuddy.presenter.theme.FinanceBuddyTheme
 
 @Composable
@@ -24,43 +28,70 @@ fun CategoryExpenses(
             ViewModelKey.CATEGORY_EXPENSES
         ) as CategoryExpensesViewModel
 
-        var showEditCategoryDialog by remember { mutableStateOf(false) }
-        var categoryTextFieldIsValid by remember { mutableStateOf(false) }
-        var removeItem by remember { mutableStateOf(false) }
-        val listOfIncomes by viewModel.listAllExpenses.collectAsState()
+        var showEditCategoryButtomSheet by remember { mutableStateOf(false) }
+        var categoryToBeEdited by remember { mutableStateOf<Category?>(null) }
+        val categoryName by viewModel.name.collectAsState()
+        var categoryNameIsValid by remember { mutableStateOf(false) }
 
-        val category by viewModel.category.collectAsState()
-        val name by viewModel.name.collectAsState()
+        var showRemoveDialog by remember { mutableStateOf(false) }
+        var categoryToBeRemoved by remember { mutableStateOf<Category?>(null) }
 
+        val listAllExpenses by viewModel.listAllExpenses.collectAsState()
         val context = LocalContext.current
 
-        LaunchedEffect(category?.id) {
-            viewModel.updateNameField(category?.name.toString())
+        LaunchedEffect(categoryToBeEdited?.id) {
+            categoryToBeEdited?.let { category ->
+                viewModel.updateNameField(category.name)
+            }
+            categoryNameIsValid = viewModel.validateField(categoryName)
         }
 
         CategorySection(
             modifier = modifier,
-            name = name,
-            listOfCategories = listOfIncomes,
-            onClickEditCategory = {
-                showEditCategoryDialog = !showEditCategoryDialog
-                viewModel.getExpenseById(it)
+            categoriesList = listAllExpenses,
+            editCategory = { item, state ->
+                categoryToBeEdited = item
+                showEditCategoryButtomSheet = state
             },
-            onDeleteClickItem = {
-                removeItem = !removeItem
-                viewModel.getExpenseById(it)
-            },
-            isValid = categoryTextFieldIsValid,
-            textFieldIsValid = {
-                categoryTextFieldIsValid = it.trim().isNotEmpty()
-                viewModel.updateNameField(it)
-            },
-            showEditCategoryDialog = { showEditCategoryDialog = it },
-            context = context,
-            updateName = { viewModel.update(it) },
-            removeItem = removeItem,
-            onDismissIRemoveItem = { removeItem = !removeItem },
-            deleteThisItem = { viewModel.delete() }
+            deleteItem = { item, state ->
+                categoryToBeRemoved = item
+                showRemoveDialog = state
+            }
         )
+
+        when {
+            showRemoveDialog -> {
+                RemoveItemDialog(
+                    onDismissRequest = {
+                        showRemoveDialog = false
+                    },
+                    onConfirmation = {
+                        categoryToBeRemoved?.let { viewModel.delete(it) }
+                    },
+                    dialogTitle = context.getString(R.string.are_you_sure_about_this),
+                    dialogText = context.getString(R.string.delete_item)
+                )
+            }
+
+            showEditCategoryButtomSheet -> {
+                categoryToBeEdited?.let { category ->
+                    EditCategoryNameBottomSheet(
+                        modifier = modifier,
+                        title = context.getString(R.string.update_category),
+                        textFieldIsValid = viewModel.validateField(category.name),
+                        textFieldUpdateValue = { text ->
+                            viewModel.updateNameField(text)
+                        },
+                        text = categoryName,
+                        showModalBottomSheet = {
+                            showEditCategoryButtomSheet = !showEditCategoryButtomSheet
+                        },
+                        onSaveCategory = {
+                            viewModel.update(category.id, categoryName, category.type)
+                        }
+                    )
+                }
+            }
+        }
     }
 }

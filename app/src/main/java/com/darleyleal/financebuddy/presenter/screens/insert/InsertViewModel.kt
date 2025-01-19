@@ -16,11 +16,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InsertViewModel @Inject constructor(
-    private val insertRegistrationUseCase: RegistrationUserCase,
+    private val registrationUserCase: RegistrationUserCase,
     private val categoryUserCase: CategoryUserCase
 ) : ViewModel() {
 
-    data class UiState(
+    data class InsertUiState(
         val name: String = "",
         val description: String = "",
         val value: String = "",
@@ -34,8 +34,8 @@ class InsertViewModel @Inject constructor(
         val error: String? = null
     )
 
-    private val _uiState = MutableStateFlow(UiState(isLoading = true))
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(InsertUiState(isLoading = true))
+    val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -72,7 +72,8 @@ class InsertViewModel @Inject constructor(
         val currentUiState = uiState.value
         return with(currentUiState) {
             name.isNotBlank() && description.isNotBlank() &&
-                    value.isNotBlank() && date.isNotBlank() && selectedType.isNotBlank()
+                    value.isNotBlank() && date.isNotBlank()
+                    && selectedType.isNotBlank()
         }
     }
 
@@ -92,19 +93,22 @@ class InsertViewModel @Inject constructor(
 
     fun insertRegistration() {
         viewModelScope.launch {
-            if (validateFormFields()) {
-                val currentUiState = uiState.value
-                insertRegistrationUseCase.insert(
-                    name = currentUiState.name,
-                    description = currentUiState.description,
-                    value = currentUiState.value,
-                    date = currentUiState.date,
-                    type = currentUiState.selectedType,
-                    category = currentUiState.category
-                )
-                clearFields()
-            } else {
-                _uiState.update { it.copy(error = "This field is required!") }
+            when {
+                validateFormFields() -> {
+                    val currentUiState = uiState.value
+                    registrationUserCase.insert(
+                        name = currentUiState.name,
+                        description = currentUiState.description,
+                        value = currentUiState.value,
+                        date = currentUiState.date,
+                        type = currentUiState.selectedType,
+                        category = currentUiState.category
+                    )
+                    clearFields()
+                }
+                else -> {
+                    _uiState.update { it.copy(error = "This field is required!") }
+                }
             }
         }
     }

@@ -17,8 +17,8 @@ interface CategoryDao {
     @Delete
     suspend fun delete(category: Category)
 
-    @Query("UPDATE categories SET name = :name WHERE id = :id")
-    suspend fun update(id: Long, name: String)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun update(category: Category)
 
     @Query("SELECT * FROM categories")
     fun getAllCategories(): Flow<List<Category>>

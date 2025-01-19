@@ -21,7 +21,7 @@ interface RegistrationDao {
     suspend fun delete(registration: Registration)
 
     @Query("SELECT * FROM registrations WHERE id = :id")
-    fun getResgistationById(id: Long) : Flow<Registration>
+    fun getResgistationById(id: Long): Flow<Registration>
 
     @Query("SELECT * FROM registrations")
     fun getAllRegistrations(): Flow<List<Registration>>

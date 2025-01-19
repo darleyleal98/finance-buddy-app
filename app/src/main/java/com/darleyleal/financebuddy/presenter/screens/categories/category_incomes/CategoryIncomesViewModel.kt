@@ -24,13 +24,7 @@ class CategoryIncomesViewModel @Inject constructor(
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            categoryUserCase.getAllItemsByCategoryEqualsIncome().collect {
-                _listAllIncomes.value = it
-            }
-        }
-    }
+    init { getAllIncomes() }
 
     fun updateNameField(newValue: String) {
         _name.value = newValue
@@ -50,20 +44,15 @@ class CategoryIncomesViewModel @Inject constructor(
         }
     }
 
-    fun update(name: String) {
+    fun update(id: Long, name: String, type: String) {
         viewModelScope.launch {
-            category.value?.id?.let {
-                categoryUserCase.update(it, name)
-            }
-            getAllIncomes()
+            categoryUserCase.update(id, name, type)
         }
     }
 
-    fun delete() {
+    fun delete(category: Category) {
         viewModelScope.launch {
-            category.value?.let {
-                categoryUserCase.delete(it)
-            }
+            categoryUserCase.delete(category)
         }
     }
 

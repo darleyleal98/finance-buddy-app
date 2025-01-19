@@ -11,17 +11,9 @@ import javax.inject.Inject
 class RegistrationRepository @Inject constructor(
     private val dao: RegistrationDao
 ) {
-    suspend fun insert(registration: Registration) {
-        dao.insert(registration)
-    }
-
-    suspend fun update(registration: Registration) {
-        dao.update(registration)
-    }
-
-    suspend fun delete(registration: Registration) {
-        dao.delete(registration)
-    }
+    suspend fun insert(registration: Registration) = dao.insert(registration)
+    suspend fun update(registration: Registration) = dao.update(registration)
+    suspend fun delete(registration: Registration) = dao.delete(registration)
 
     fun getAllRegistrations(): Flow<List<Registration>> {
         return dao.getAllRegistrations().flowOn(Dispatchers.IO).conflate()

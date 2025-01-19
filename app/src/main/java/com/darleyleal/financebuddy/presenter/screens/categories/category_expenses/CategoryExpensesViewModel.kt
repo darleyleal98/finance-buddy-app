@@ -25,11 +25,7 @@ class CategoryExpensesViewModel @Inject constructor(
     val name = _name.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            categoryUserCase.getAllItemsByCategoryEqualsExpense().collect {
-                _listAllExpenses.value = it
-            }
-        }
+        getAllExpenses()
     }
 
     fun updateNameField(newValue: String) {
@@ -38,7 +34,7 @@ class CategoryExpensesViewModel @Inject constructor(
 
     private fun getAllExpenses() {
         viewModelScope.launch {
-            categoryUserCase.getAllItemsByCategoryEqualsIncome().collect {
+            categoryUserCase.getAllItemsByCategoryEqualsExpense().collect {
                 _listAllExpenses.value = it
             }
         }
@@ -50,20 +46,15 @@ class CategoryExpensesViewModel @Inject constructor(
         }
     }
 
-    fun update(name: String) {
+    fun update(id: Long, name: String, type: String) {
         viewModelScope.launch {
-            category.value?.id?.let {
-                categoryUserCase.update(it, name)
-            }
-            getAllExpenses()
+            categoryUserCase.update(id, name, type)
         }
     }
 
-    fun delete() {
+    fun delete(category: Category) {
         viewModelScope.launch {
-            category.value?.let {
-                categoryUserCase.delete(it)
-            }
+            categoryUserCase.delete(category)
         }
     }
 

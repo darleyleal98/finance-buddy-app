@@ -61,11 +61,12 @@ fun AnalyticsScreen(
                 incomesList = incomes,
                 expensesList = expenses
             )
+
             Text(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                text = "History by date",
+                text = stringResource(R.string.history_by_date),
                 textAlign = TextAlign.Center,
                 fontSize = 22.sp,
                 color = when {
@@ -84,6 +85,16 @@ fun AnalyticsScreen(
                     .size(width = 600.dp, height = 532.dp)
                     .verticalScroll(scrollState)
             ) {
+                when {
+                    registrationsByMonth.isEmpty() -> {
+                        Text(
+                            modifier = modifier.fillMaxWidth(),
+                            text = stringResource(R.string.no_registrations_found),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+
                 registrationsByMonth.forEach { (date, items) ->
                     Text(
                         modifier = modifier.padding(16.dp),
@@ -97,7 +108,9 @@ fun AnalyticsScreen(
 
                     items.forEach {
                         Row(
-                            modifier = modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Row {
@@ -120,7 +133,7 @@ fun AnalyticsScreen(
                             Text(text = convertToCurrency(it.value))
                         }
                     }
-                    Spacer(modifier =modifier.padding(bottom = 8.dp))
+                    Spacer(modifier = modifier.padding(bottom = 8.dp))
                 }
             }
         }

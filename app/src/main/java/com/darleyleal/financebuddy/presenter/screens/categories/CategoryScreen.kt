@@ -22,7 +22,7 @@ import com.darleyleal.financebuddy.presenter.theme.FinanceBuddyTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CategoriesScreen(
+fun CategoryScreen(
     navigationProvider: NavigationProvider,
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,

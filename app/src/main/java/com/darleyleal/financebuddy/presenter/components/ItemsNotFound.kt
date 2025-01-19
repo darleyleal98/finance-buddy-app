@@ -1,20 +1,17 @@
 package com.darleyleal.financebuddy.presenter.components
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.SearchOff
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,29 +21,27 @@ import com.darleyleal.financebuddy.R
 fun ItemsNotFound(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .size(500.dp, 300.dp)
+            .size(500.dp, 400.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     )
     {
-        Icon(
-            imageVector = Icons.Filled.SearchOff,
+        Image(
+            painter = painterResource(R.drawable.not_found_illustration),
             contentDescription = null,
-            tint = when {
-                isSystemInDarkTheme() -> {
-                    Color.Cyan
-                }
-
-                else -> {
-                    Color.Black
-                }
-            },
-            modifier = modifier.size(50.dp)
+            modifier = modifier.size(150.dp)
         )
+        Spacer(modifier = modifier.padding(top = 16.dp))
         Text(
-            text = stringResource(R.string.oops_no_items_to_list),
+            text = "Result Not Found",
             fontSize = 33.sp,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = modifier.padding(top = 8.dp))
+        Text(
+            text = "Please try adding a new item so that it is listed on the screen",
+            fontSize = 16.sp,
             textAlign = TextAlign.Center
         )
     }

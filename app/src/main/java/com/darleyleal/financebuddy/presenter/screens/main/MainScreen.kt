@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingDown
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.TrendingDown
-import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,17 +40,17 @@ import com.darleyleal.financebuddy.domain.enums.Type
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
 import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
 import com.darleyleal.financebuddy.domain.navigation.bottonNavigationItems
+import com.darleyleal.financebuddy.presenter.components.CategoryModalBottomSheet
 import com.darleyleal.financebuddy.presenter.components.CustomExpandableFloatingActionButton
 import com.darleyleal.financebuddy.presenter.components.FABItem
 import com.darleyleal.financebuddy.presenter.components.HomeScreenTopAppBar
 import com.darleyleal.financebuddy.presenter.components.TypeOptionsTopAppBar
 import com.darleyleal.financebuddy.presenter.components.UpdateBalanceDialog
-import com.darleyleal.financebuddy.presenter.screens.categories.CategoriesScreen
-import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialog
-import com.darleyleal.financebuddy.presenter.screens.categories.custom_category_dialog.CategoryDialogViewModel
-import com.darleyleal.financebuddy.presenter.screens.home.CardInformationViewModel
-import com.darleyleal.financebuddy.presenter.screens.home.HomeScreen
 import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsScreen
+import com.darleyleal.financebuddy.presenter.screens.categories.CategoryScreen
+import com.darleyleal.financebuddy.presenter.screens.categories.CategoryViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.HomeScreen
+import com.darleyleal.financebuddy.presenter.screens.home.card_information.CardInformationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +63,7 @@ fun MainScreen(
 ) {
     val categoryDialogViewModel = navigationProvider.getViewModel(
         ViewModelKey.NEW_CATEGORY
-    ) as CategoryDialogViewModel
+    ) as CategoryViewModel
 
     val balanceViewModel = navigationProvider.getViewModel(
         ViewModelKey.BALANCE
@@ -71,21 +71,26 @@ fun MainScreen(
 
     val uiState by balanceViewModel.uiState.collectAsState()
     var validateBalanceField by remember { mutableStateOf(true) }
-
     var categoryButtonWasClicked by remember { mutableStateOf(false) }
 
-    val showCategoryDialog = remember { mutableStateOf(false) }
+    var showCategoryModalBottonSheet by remember { mutableStateOf(false) }
     val showBalanceDialog = remember { mutableStateOf(false) }
 
-    var textFieldIsValid by remember { mutableStateOf(true) }
+    val textFieldIsValid by remember { mutableStateOf(true) }
     val category by categoryDialogViewModel.category.collectAsState()
     val radioOptionSelected by categoryDialogViewModel.radioOptionSelected.collectAsState()
     val radioOptions = categoryDialogViewModel.radioOptionsList
     val context = LocalContext.current
 
     val itemsList = listOf(
-        FABItem(icon = Icons.Default.TrendingUp, text = stringResource(R.string.income)),
-        FABItem(icon = Icons.Default.TrendingDown, text = stringResource(R.string.expense)),
+        FABItem(
+            icon = Icons.AutoMirrored.Filled.TrendingUp,
+            text = stringResource(R.string.income)
+        ),
+        FABItem(
+            icon = Icons.AutoMirrored.Filled.TrendingDown,
+            text = stringResource(R.string.expense)
+        ),
         FABItem(icon = Icons.Default.Wallet, text = stringResource(R.string.balance))
     )
 
@@ -158,10 +163,10 @@ fun MainScreen(
                             )
                         },
                         text = {
-                            Text(text = "New Category")
+                            Text(text = stringResource(R.string.new_category))
                         },
                         onClick = {
-                            showCategoryDialog.value = !showCategoryDialog.value
+                            showCategoryModalBottonSheet = true
                         }
                     )
                 }
@@ -194,7 +199,7 @@ fun MainScreen(
                 }
             }
         }
-    ) {
+    ) { it ->
         when (selectedItemIndex) {
             0 -> {
                 HomeScreen(
@@ -211,7 +216,7 @@ fun MainScreen(
             }
 
             2 -> {
-                CategoriesScreen(
+                CategoryScreen(
                     navigationProvider = navigationProvider,
                     paddingValues = it,
                     wasClicked = categoryButtonWasClicked
@@ -219,24 +224,22 @@ fun MainScreen(
             }
         }
 
-        if (showCategoryDialog.value) {
-            CategoryDialog(
-                title = stringResource(R.string.add_new_category),
+        if (showCategoryModalBottonSheet) {
+            CategoryModalBottomSheet(
+                title = stringResource(R.string.new_category),
                 textFieldIsValid = textFieldIsValid,
-                textFieldUpdateValue = { text ->
-                    textFieldIsValid = text.trim().isNotEmpty()
-                    categoryDialogViewModel.updateCategoryField(text)
+                textFieldUpdateValue = { value ->
+                    categoryDialogViewModel.updateCategoryField(value)
                 },
                 text = category,
+                radioOptions = radioOptions,
                 radioOptionSelected = { optionSelected ->
                     categoryDialogViewModel.updateRadioButton(optionSelected)
                 },
-                radioOptions = radioOptions,
-                onDismiss = {
-                    showCategoryDialog.value = false
+                showModalBotonSheet = {
+                    showCategoryModalBottonSheet = false
                 },
-                categoryFunction = {
-                    textFieldIsValid = categoryDialogViewModel.validateCategoryField(category)
+                saveCategory = {
                     when {
                         textFieldIsValid -> {
                             categoryDialogViewModel.insert(
@@ -249,7 +252,7 @@ fun MainScreen(
                                 ),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            showCategoryDialog.value = false
+                            showCategoryModalBottonSheet = false
                         }
 
                         else -> {
