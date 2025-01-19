@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -31,7 +30,12 @@ fun AppNavigation(
         composable(route = Routes.StartScreen.name) {
             StartScreen(navigationProvider,
                 onNavigateToHomeScreen = {
-                    navController.navigate(Routes.MainScreen.name)
+                    navController.navigate(Routes.MainScreen.name) {
+                        popUpTo(Routes.StartScreen.name) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             )
         }
