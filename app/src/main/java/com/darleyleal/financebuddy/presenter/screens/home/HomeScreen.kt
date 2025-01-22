@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +29,7 @@ import com.darleyleal.financebuddy.data.local.Registration
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
 import com.darleyleal.financebuddy.domain.navigation.NavigationProvider
 import com.darleyleal.financebuddy.presenter.components.HistoryInformations
+import com.darleyleal.financebuddy.presenter.components.OpenInFullScreenRegistrationModalSheet
 import com.darleyleal.financebuddy.presenter.components.RemoveItemDialog
 import com.darleyleal.financebuddy.presenter.screens.home.card_information.CardInformation
 import com.darleyleal.financebuddy.presenter.screens.home.card_information.CardInformationViewModel
@@ -44,25 +46,35 @@ fun HomeScreen(
     val homeViewModel = navigationProvider.getViewModel(ViewModelKey.HOME) as HomeViewModel
     val homeViewModelUiState by homeViewModel.uiState.collectAsState()
 
-    val balanceViewModel =
-        navigationProvider.getViewModel(ViewModelKey.BALANCE) as CardInformationViewModel
-    val BalanaceViewModelUiState by balanceViewModel.uiState.collectAsState()
+    val cardInformationViewModel = navigationProvider.getViewModel(
+        ViewModelKey.BALANCE
+    ) as CardInformationViewModel
 
     var cardValuesIsVisible by remember { mutableStateOf(true) }
     var deleteRegistrationItemSelected by remember { mutableStateOf<Registration?>(null) }
     var removeItem by remember { mutableStateOf(false) }
-
     var showBottonSheet by remember { mutableStateOf(false) }
+
+    var openInFullScreenRegistrationModalSheet by remember { mutableStateOf(false) }
+    var registrationToOpenInFullScreen by remember { mutableStateOf<Registration?>(null) }
+    val uiState by cardInformationViewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState.balance?.id) {
+        cardInformationViewModel.convertAvailableBalanceToCurrency()
+        cardInformationViewModel.calculateValueAllExpenses()
+        cardInformationViewModel.calculateValueAllIncomes()
+    }
 
     Column(modifier.padding(paddingValues)) {
         CardInformation(
-            valuesIsVisible = cardValuesIsVisible,
-            balance = BalanaceViewModelUiState.balance,
+            availableBalance = cardInformationViewModel.convertAvailableBalanceToCurrency(),
             onClickVisibilityButton = {
                 cardValuesIsVisible = !cardValuesIsVisible
             },
-            income = balanceViewModel.calculateValueAllIncomes(),
-            expanse = balanceViewModel.calculateValueAllExpenses(),
+            income = cardInformationViewModel.calculateValueAllIncomes(),
+            expanse = cardInformationViewModel.calculateValueAllExpenses(),
+            modifier = modifier,
+            valuesIsVisible = cardValuesIsVisible,
         )
 
         Text(
@@ -109,6 +121,10 @@ fun HomeScreen(
                                 },
                                 showUpdateRegistrationButtonSheet = {
                                     showBottonSheet = it
+                                },
+                                openInFullModalSheetButton = { state, registration ->
+                                    openInFullScreenRegistrationModalSheet = state
+                                    registrationToOpenInFullScreen = registration
                                 }
                             )
                         }
@@ -124,9 +140,7 @@ fun HomeScreen(
                         removeItem = !removeItem
                     },
                     onConfirmation = {
-                        deleteRegistrationItemSelected?.let {
-                            homeViewModel.delete(it)
-                        }
+                        deleteRegistrationItemSelected?.let { homeViewModel.delete(it) }
                     },
                     dialogTitle = stringResource(R.string.are_you_sure_about_this),
                     dialogText = stringResource(R.string.delete_item),
@@ -153,6 +167,18 @@ fun HomeScreen(
                                 homeViewModelUiState.type
                             )
                             showBottonSheet = false
+                        }
+                    )
+                }
+            }
+
+            openInFullScreenRegistrationModalSheet -> {
+                registrationToOpenInFullScreen?.let {
+                    OpenInFullScreenRegistrationModalSheet(
+                        modifier = modifier,
+                        registration = it,
+                        showModalBottomSheet = { state ->
+                            openInFullScreenRegistrationModalSheet = state
                         }
                     )
                 }

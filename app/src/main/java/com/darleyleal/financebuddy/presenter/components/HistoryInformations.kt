@@ -1,5 +1,6 @@
 package com.darleyleal.financebuddy.presenter.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -8,16 +9,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TrendingDown
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.darleyleal.financebuddy.data.local.Registration
@@ -45,14 +45,15 @@ fun HistoryInformations(
     showDeleteDialog: (Boolean) -> Unit,
     onDeleteItem: (Registration) -> Unit,
     registrationId: (Long) -> Unit,
-    showUpdateRegistrationButtonSheet: (Boolean) -> Unit
+    showUpdateRegistrationButtonSheet: (Boolean) -> Unit,
+    openInFullModalSheetButton: (Boolean, Registration) -> Unit
 ) {
     var expand by remember { mutableStateOf(false) }
 
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 8.dp, vertical = 8.dp)
             .clickable(
                 onClick = {
                     expand = !expand
@@ -60,7 +61,7 @@ fun HistoryInformations(
             ),
         colors = CardDefaults.cardColors(
             MaterialTheme.colorScheme.primaryContainer.copy(
-                alpha = 0.2f
+                alpha = 0.0f
             )
         )
     ) {
@@ -81,8 +82,12 @@ fun HistoryInformations(
                     fontSize = 24.sp, fontWeight = FontWeight.W700
                 )
                 Text(text = convertDate(registration.date))
-
-                Row(modifier = modifier.padding(top = 8.dp)) {
+                Row(
+                    modifier = modifier
+                        .padding(top = 4.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Icon(
                         imageVector = when {
                             registration.category == Type.Income.name -> Icons.AutoMirrored.Default.TrendingUp
@@ -95,49 +100,43 @@ fun HistoryInformations(
                         contentDescription = null
                     )
                     Text(
-                        modifier = modifier.fillMaxWidth(),
                         text = convertToCurrency(registration.value),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.W700,
-                        textAlign = TextAlign.End
                     )
                 }
 
-                when {
-                    expand -> {
-                        Column {
-                            Text(
-                                modifier = modifier.padding(top = 22.dp),
-                                text = registration.description.lowercase()
-                                    .replaceFirstChar { it.titlecase() }
-                            )
-                            Text(
-                                modifier = modifier.padding(top = 8.dp),
-                                text = registration.type.toString().lowercase()
-                                    .replaceFirstChar { it.titlecase() }
-                            )
-                            Row(
-                                modifier = modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End
-                            ) {
-                                IconButton(
-                                    onClick = {
-                                        showUpdateRegistrationButtonSheet(true)
-                                        registrationId(registration.id)
-                                    }
-                                ) {
-                                    Icon(Icons.Filled.Edit, null)
-                                }
-
-                                IconButton(
-                                    onClick = {
-                                        onDeleteItem(registration)
-                                        showDeleteDialog(true)
-                                    }
-                                ) {
-                                    Icon(Icons.Filled.Delete, null)
-                                }
+                AnimatedVisibility(expand) {
+                    Row(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        IconButton(
+                            onClick = {
+                                showUpdateRegistrationButtonSheet(true)
+                                registrationId(registration.id)
                             }
+                        ) {
+                            Icon(Icons.Filled.Edit, null)
+                        }
+
+                        IconButton(
+                            onClick = {
+                                onDeleteItem(registration)
+                                showDeleteDialog(true)
+                            }
+                        ) {
+                            Icon(Icons.Filled.Delete, null)
+                        }
+
+                        IconButton(
+                            onClick = {
+                                openInFullModalSheetButton(true, registration)
+                            }
+                        ) {
+                            Icon(Icons.Filled.OpenInFull, null)
                         }
                     }
                 }

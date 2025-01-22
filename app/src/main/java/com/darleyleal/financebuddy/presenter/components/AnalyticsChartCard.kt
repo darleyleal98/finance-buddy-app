@@ -44,9 +44,10 @@ fun AnalyticsChart(
 
     Box(
         modifier
-            .height(450.dp)
             .fillMaxWidth()
-            .padding(16.dp)) {
+            .height(450.dp)
+            .padding(start = 8.dp)
+    ) {
         BarChart(
             xAxisData = monthsList,
             chartParameters = lineParameters,
@@ -76,7 +77,7 @@ fun AnalyticsChart(
                 fontSize = 14.sp
             ),
             barCornerRadius = 100.dp,
-            spaceBetweenBars = 8.dp
+            spaceBetweenBars = 6.dp
         )
     }
 }

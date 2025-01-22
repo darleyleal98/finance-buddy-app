@@ -19,7 +19,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.darleyleal.financebuddy.R
-import com.darleyleal.financebuddy.data.local.Balance
 import com.darleyleal.financebuddy.domain.enums.Type
 import com.darleyleal.financebuddy.domain.usercases.utils.convertToCurrency
 
@@ -40,7 +38,7 @@ fun CardInformation(
     modifier: Modifier = Modifier,
     onClickVisibilityButton: () -> Unit,
     valuesIsVisible: Boolean,
-    balance: Balance?,
+    availableBalance: Float,
     income: String,
     expanse: String
 ) {
@@ -48,14 +46,13 @@ fun CardInformation(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp
         ),
-        border = BorderStroke(2.dp, Color.Cyan),
+        border = BorderStroke(2.dp, if (isSystemInDarkTheme()) Color.Cyan else Color.LightGray),
         modifier = modifier
             .fillMaxWidth()
             .height(225.dp)
             .padding(top = 16.dp, start = 16.dp, end = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSystemInDarkTheme())
-                MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.inverseOnSurface
+            containerColor = Color.Transparent
         ),
     ) {
         Column(modifier = modifier.padding(top = 22.dp, start = 16.dp, end = 16.dp)) {
@@ -67,15 +64,16 @@ fun CardInformation(
                     .padding(top = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                balance?.let {
-                    Text(
-                        text = if (valuesIsVisible) convertToCurrency(it.availableBalance) else "*****",
-                        fontWeight = FontWeight.W700,
-                        fontSize = 42.sp,
-                        color = if (isSystemInDarkTheme()) Color.Cyan else Color.Black,
-                        modifier = modifier.padding(top = 8.dp)
-                    )
-                }
+                Text(
+                    text = if (valuesIsVisible) convertToCurrency(availableBalance) else "*****",
+                    fontWeight = FontWeight.W700,
+                    fontSize = 42.sp,
+                    color = when {
+                        availableBalance < 0 -> Color.Red
+                        else -> Color.Green
+                    },
+                    modifier = modifier.padding(top = 8.dp)
+                )
 
                 Icon(
                     modifier = modifier

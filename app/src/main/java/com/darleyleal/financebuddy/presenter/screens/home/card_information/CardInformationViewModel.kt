@@ -93,16 +93,27 @@ class CardInformationViewModel @Inject constructor(
     }
 
     fun calculateValueAllIncomes(): String {
-        val result =  uiState.value.incomesList.sumOf {
+        val result = _uiState.value.incomesList.sumOf {
             it.value.toString().toDoubleOrNull() ?: 0.0
         }
         return convertToCurrency(result.toFloat())
     }
 
     fun calculateValueAllExpenses(): String {
-        val result = uiState.value.expensesList.sumOf {
+        val result = _uiState.value.expensesList.sumOf {
             it.value.toString().toDoubleOrNull() ?: 0.0
         }
         return convertToCurrency(result.toFloat())
+    }
+
+    fun convertAvailableBalanceToCurrency(): Float {
+        val availableBalance =
+            _uiState.value.balance?.availableBalance.toString().toDoubleOrNull() ?: 0.0
+
+        val expenses = _uiState.value.expensesList.sumOf {
+            it.value.toString().toDoubleOrNull() ?: 0.0
+        }
+
+        return availableBalance.toFloat() - expenses.toFloat()
     }
 }

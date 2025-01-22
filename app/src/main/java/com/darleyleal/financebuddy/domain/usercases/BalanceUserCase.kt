@@ -2,8 +2,6 @@ package com.darleyleal.financebuddy.domain.usercases
 
 import com.darleyleal.financebuddy.data.database.repository.BalanceRepository
 import com.darleyleal.financebuddy.data.local.Balance
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -12,6 +10,7 @@ class BalanceUserCase @Inject constructor(
 ) {
     suspend fun updateOrInsertBalance(newValue: String) {
         val balance = repository.getBalance().first()
+
         when {
             balance != null -> {
                 repository.update(

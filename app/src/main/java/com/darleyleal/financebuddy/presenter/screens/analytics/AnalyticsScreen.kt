@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,7 +55,7 @@ fun AnalyticsScreen(
 
     FinanceBuddyTheme {
         Column(
-            modifier.padding(paddingValues)
+            modifier.padding(paddingValues).fillMaxWidth()
         ) {
             AnalyticsChart(
                 monthsList = months,
@@ -110,7 +111,7 @@ fun AnalyticsScreen(
                         Row(
                             modifier = modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 8.dp),
+                                .padding(horizontal = 16.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Row {
@@ -132,6 +133,7 @@ fun AnalyticsScreen(
                             }
                             Text(text = convertToCurrency(it.value))
                         }
+                        HorizontalDivider(modifier = modifier.padding(start = 16.dp, end = 16.dp))
                     }
                     Spacer(modifier = modifier.padding(bottom = 8.dp))
                 }

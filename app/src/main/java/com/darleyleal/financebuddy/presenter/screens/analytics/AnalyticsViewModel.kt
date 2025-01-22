@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.darleyleal.financebuddy.data.local.Registration
 import com.darleyleal.financebuddy.domain.enums.Type
 import com.darleyleal.financebuddy.domain.usercases.RegistrationUserCase
-import com.darleyleal.financebuddy.domain.usercases.utils.formatMonthAndYear
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,6 +13,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,7 +46,7 @@ class AnalyticsViewModel @Inject constructor(
 
         val groupedRegistrations = groupRegistrationsByMonth(incomes, expenses)
         val monthlyTotals = calculateMonthlyTotals(groupedRegistrations)
-        prepareCharDate(monthlyTotals)
+        prepareCharData(monthlyTotals)
 
     }.stateIn(
         viewModelScope,
@@ -87,21 +89,29 @@ class AnalyticsViewModel @Inject constructor(
 
     private fun groupRegistrationsByMonth(
         incomes: List<Registration>, expenses: List<Registration>
-    ): Map<String, List<Registration>> {
+    ): Map<YearMonth, List<Registration>> {
 
         val allRegistrations = incomes + expenses
 
         return allRegistrations.groupBy { registration ->
-            val (day, month, year) = registration.date.split("/")
-           formatMonthAndYear(month, year)
+            val dateParts = registration.date.split("/")
+            val day = dateParts[0].toInt()
+            val month = dateParts[1].toInt()
+            val year = dateParts[2].toInt()
+            YearMonth.of(year, month)
         }
     }
 
     private fun calculateMonthlyTotals(
-        groupedRegistration: Map<String, List<Registration>>
+        groupedRegistration: Map<YearMonth, List<Registration>>
     ): Map<String, Pair<Double, Double>> {
+        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
 
-        return groupedRegistration.mapValues { (_, registrationsOfMonth) ->
+        return groupedRegistration.mapKeys { entry ->
+            val yearMonth = entry.key
+            val formattedMonthYear = yearMonth.format(formatter)
+            formattedMonthYear
+        }.mapValues { (_, registrationsOfMonth) ->
             val incomes = registrationsOfMonth.filter {
                 it.category == Type.Income.name
             }.sumOf {
@@ -118,13 +128,52 @@ class AnalyticsViewModel @Inject constructor(
         }
     }
 
-    private fun prepareCharDate(
+    /**
+     * Prepara os dados para o gráfico, para que os meses sejam exibidos na ordem correta.
+     *
+     * @param monthlyTotals É um mapa onde as chaves são strings no formato "Mês Ano" (ex: "Janeiro 2025")
+     *                      e os valores são pares de Double (expense, income).
+     *
+     * @param sortedYearMonths  Criar uma lista de YearMonth para que será ordenada.
+     *
+     * @param expenses Extrai os valores de despesas.
+     * @param incomes Extrai os valores dos rendimentos.
+     * @param months Formata os meses para exibição no gráfico.
+     *
+     * @return Triple<List<Double>, List<Double>, List<String>>
+     *         Onde:
+     *         - first: Lista de rendimentos (Double).
+     *         - second: Lista de despesas (Double).
+     *         - third: Lista de meses formatados para exibição (String).
+     */
+    private fun prepareCharData(
         monthlyTotals: Map<String, Pair<Double, Double>>
     ): Triple<List<Double>, List<Double>, List<String>> {
+        val sortedYearMonths = monthlyTotals.keys.map {
+            YearMonth.parse(it, DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault()))
+        }.sorted()
 
-        val months = monthlyTotals.keys.toList()
-        val incomes = monthlyTotals.values.map { it.first }.toList()
-        val expenses = monthlyTotals.values.map { it.second }.toList()
+        val expenses = sortedYearMonths.map { yearMonth ->
+            monthlyTotals[yearMonth.format(
+                DateTimeFormatter.ofPattern(
+                    "MMMM yyyy",
+                    Locale.getDefault()
+                )
+            )]?.first ?: 0.0
+        }.toList()
+
+        val incomes = sortedYearMonths.map { yearMonth ->
+            monthlyTotals[yearMonth.format(
+                DateTimeFormatter.ofPattern(
+                    "MMMM yyyy",
+                    Locale.getDefault()
+                )
+            )]?.second ?: 0.0
+        }.toList()
+
+        val months = sortedYearMonths.map { yearMonth ->
+            yearMonth.format(DateTimeFormatter.ofPattern("MMMM", Locale.getDefault()))
+        }.toList()
 
         return Triple(incomes, expenses, months)
     }

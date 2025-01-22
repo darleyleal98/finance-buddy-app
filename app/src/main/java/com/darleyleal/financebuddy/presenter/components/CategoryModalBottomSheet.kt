@@ -41,7 +41,7 @@ fun <T> CategoryModalBottomSheet(
     text: String,
     radioOptionSelected: (String) -> Unit,
     radioOptions: List<T>,
-    showModalBotonSheet: (Boolean) -> Unit,
+    showModalBotomSheet: (Boolean) -> Unit,
     saveCategory: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -57,7 +57,7 @@ fun <T> CategoryModalBottomSheet(
                 .padding(top = statusBarPadding.dp),
             sheetState = sheetState,
             onDismissRequest = {
-                showModalBotonSheet(false)
+                showModalBotomSheet(false)
             }
         ) {
             Text(
@@ -104,7 +104,7 @@ fun <T> CategoryModalBottomSheet(
                     onClick = {
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
-                                showModalBotonSheet(false)
+                                showModalBotomSheet(false)
                             }
                         }
                     }

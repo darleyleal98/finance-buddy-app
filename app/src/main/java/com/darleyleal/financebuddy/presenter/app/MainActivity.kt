@@ -14,11 +14,11 @@ import com.darleyleal.financebuddy.presenter.app.utils.showBiometricLogin
 import com.darleyleal.financebuddy.presenter.app.utils.showSplahScreen
 import com.darleyleal.financebuddy.presenter.app.utils.viewModelProvider
 import com.darleyleal.financebuddy.presenter.screens.analytics.AnalyticsViewModel
+import com.darleyleal.financebuddy.presenter.screens.categories.CategoryViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_expenses.CategoryExpensesViewModel
 import com.darleyleal.financebuddy.presenter.screens.categories.category_incomes.CategoryIncomesViewModel
-import com.darleyleal.financebuddy.presenter.screens.categories.CategoryViewModel
-import com.darleyleal.financebuddy.presenter.screens.home.card_information.CardInformationViewModel
 import com.darleyleal.financebuddy.presenter.screens.home.HomeViewModel
+import com.darleyleal.financebuddy.presenter.screens.home.card_information.CardInformationViewModel
 import com.darleyleal.financebuddy.presenter.screens.insert.InsertViewModel
 import com.darleyleal.financebuddy.presenter.screens.start.StarViewModel
 import com.darleyleal.financebuddy.presenter.theme.FinanceBuddyTheme

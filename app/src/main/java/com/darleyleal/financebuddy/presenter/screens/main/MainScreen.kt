@@ -236,7 +236,7 @@ fun MainScreen(
                 radioOptionSelected = { optionSelected ->
                     categoryDialogViewModel.updateRadioButton(optionSelected)
                 },
-                showModalBotonSheet = {
+                showModalBotomSheet = {
                     showCategoryModalBottonSheet = false
                 },
                 saveCategory = {
