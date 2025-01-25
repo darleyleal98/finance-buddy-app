@@ -10,21 +10,24 @@ FinanceBuddy é um aplicativo de gestão financeira desenvolvido com o objetivo 
 Tecnologias e Arquitetura Utilizadas:
 
 <br>
+
 Linguagem: Kotlin com o sistema operacional Android.
 
-• Interface de Usuário: Desenvolvido com Jetpack Compose e Material Design 3;
+<br>
 
-• Arquitetura: Seguindo o padrão Clean Architecture combinado com MVVM, o projeto está separado em camadas conforme suas responsabilidades;
+#### Interface de Usuário: Desenvolvido com Jetpack Compose e Material Design 3;
 
-• Injeção de Dependências: Utilização do Hilt para facilitar o gerenciamento de dependências e promover o desacoplamento entre camadas;
+#### Arquitetura: Seguindo o padrão Clean Architecture combinado com MVVM, o projeto está separado em camadas conforme suas responsabilidades;
 
-• Persistência de Dados: Implementação com Room para persistência local dos dados;
+#### Injeção de Dependências: Utilização do Hilt para facilitar o gerenciamento de dependências e promover o desacoplamento entre camadas;
 
-• Navegação: Utilização do Navigation, permitindo a navegação entre as telas;
+#### Persistência de Dados: Implementação com Room para persistência local dos dados;
 
-• Carregamento de Imagens: Integração com a biblioteca Coil;
+#### Navegação: Utilização do Navigation, permitindo a navegação entre as telas;
 
-• Segurança: Recurso de autenticação com o sensor de digital do aparelho, para que apenas o usuário autorizado tenha acesso ao aplicativo.
+#### Carregamento de Imagens: Integração com a biblioteca Coil;
+
+#### Segurança: Recurso de autenticação com o sensor de digital do aparelho, para que apenas o usuário autorizado tenha acesso ao aplicativo.
 <br>
 
 <video
