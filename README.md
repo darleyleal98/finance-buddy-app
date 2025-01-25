@@ -15,7 +15,7 @@ Linguagem: Kotlin com o sistema operacional Android.
 
 <br>
 
-#### Interface de Usuário: Desenvolvido com Jetpack Compose e Material Design 3;
+<li> Interface de Usuário: Desenvolvido com Jetpack Compose e Material Design 3;
 
 #### Arquitetura: Seguindo o padrão Clean Architecture combinado com MVVM, o projeto está separado em camadas conforme suas responsabilidades;
 
