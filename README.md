@@ -7,9 +7,9 @@ Criei esse aplicativo para praticar os seguintes conceitos:
 
 FinanceBuddy é um aplicativo de gestão financeira desenvolvido com o objetivo de ajudar os usuários a acompanharem seus rendimentos e despesas de forma prática e visual. Ele oferece funcionalidades como o gerenciamento de gastos, a criação de categorias personalizadas, gráficos interativos e relatórios.
 
-Tecnologias e Arquitetura Utilizadas:
+## Tecnologias e Arquitetura Utilizadas:
 
-Linguagem: Kotlin com o sistema operacional Android.
+### Linguagem: Kotlin com o sistema operacional Android.
 
 <br>
 
