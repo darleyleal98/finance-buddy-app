@@ -2,12 +2,12 @@ package com.darleyleal.financebuddy.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.darleyleal.financebuddy.data.database.dao.BalanceDao
-import com.darleyleal.financebuddy.data.database.dao.CategoryDao
-import com.darleyleal.financebuddy.data.database.dao.RegistrationDao
-import com.darleyleal.financebuddy.data.local.Balance
-import com.darleyleal.financebuddy.data.local.Category
-import com.darleyleal.financebuddy.data.local.Registration
+import com.darleyleal.financebuddy.data.dao.BalanceDao
+import com.darleyleal.financebuddy.data.dao.CategoryDao
+import com.darleyleal.financebuddy.data.dao.RegistrationDao
+import com.darleyleal.financebuddy.data.models.Balance
+import com.darleyleal.financebuddy.data.models.Category
+import com.darleyleal.financebuddy.data.models.Registration
 
 @Database(
     entities = [Registration::class, Category::class, Balance::class],
