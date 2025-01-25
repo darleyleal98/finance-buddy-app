@@ -5,11 +5,19 @@
 
 Criei esse aplicativo para praticar os seguintes conceitos:
 
-1. Arquitetura MVVM (utilizei como o padrão de responsabilidades entre as camadas da aplicação e organização do projeto)
-2. Coroutines (utilizado para que a interação do app seja fluída e não haja lentidão conforme a quantidade de dados aumente e por ventura pudesse bloquear a main thread)
-3. Navigation (utilizei para a navegação entre as telas do app)
-4. Room (utilizei para o armazenamento local das informações)
-5. LazyVerticalStaggeredGrid (utilizei para a listagem das notas de forma adaptada conforme o seu tamanho)
+FinanceBuddy é um aplicativo de gestão financeira desenvolvido com o objetivo de ajudar os usuários a acompanharem seus rendimentos e despesas de forma prática e visual. Ele oferece funcionalidades como o gerenciamento de gastos, a criação de categorias personalizadas, gráficos interativos e relatórios.
+
+Tecnologias e Arquitetura Utilizadas:
+
+Linguagem: Kotlin com o sistema operacional Android.
+
+- Interface de Usuário: Desenvolvido com Jetpack Compose e Material Design 3;
+- Arquitetura: Seguindo o padrão Clean Architecture combinado com MVVM, o projeto está separado em camadas conforme suas responsabilidades;
+- Injeção de Dependências: Utilização do Hilt para facilitar o gerenciamento de dependências e promover o desacoplamento entre camadas;
+- Persistência de Dados: Implementação com Room para persistência local dos dados;
+- Navegação: Utilização do Navigation, permitindo a navegação entre as telas;
+- Carregamento de Imagens: Integração com a biblioteca Coil;
+- Segurança: Recurso de autenticação com o sensor de digital do aparelho, para que apenas o usuário autorizado tenha acesso ao aplicativo.
 
 <video
   controls
