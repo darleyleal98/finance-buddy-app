@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presetation.screens.home.update_registration
+package com.darleyleal.financebuddy.presetation.components
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -40,8 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.darleyleal.financebuddy.R
 import com.darleyleal.financebuddy.data.models.Registration
-import com.darleyleal.financebuddy.presetation.components.CustomTextField
-import com.darleyleal.financebuddy.presetation.components.DatePickerField
 import com.darleyleal.financebuddy.presetation.screens.home.HomeViewModel
 import kotlinx.coroutines.launch
 

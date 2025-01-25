@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presetation.app.di
+package com.darleyleal.financebuddy.di
 
 import android.content.Context
 import androidx.room.Room

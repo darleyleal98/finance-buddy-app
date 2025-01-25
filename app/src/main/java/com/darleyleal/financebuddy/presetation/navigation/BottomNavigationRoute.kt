@@ -1,6 +1,7 @@
 package com.darleyleal.financebuddy.presetation.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
@@ -27,6 +28,6 @@ val bottonNavigationItems = listOf(
     BottomNavigationRoute(
         route = Routes.CategoriesScreen.name,
         label = "Category",
-        icon = Icons.Default.List
+        icon = Icons.AutoMirrored.Filled.List
     )
 )

@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.presetation.app.di
+package com.darleyleal.financebuddy.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

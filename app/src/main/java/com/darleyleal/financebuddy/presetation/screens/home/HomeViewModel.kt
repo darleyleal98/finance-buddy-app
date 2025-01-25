@@ -18,20 +18,7 @@ class HomeViewModel @Inject constructor(
     private val categoryUserCase: CategoryUserCase
 ) : ViewModel() {
 
-    data class UiState(
-        val id: Long = 0,
-        val name: String = "",
-        val description: String = "",
-        val value: String = "",
-        val date: String = "",
-        val type: String = "",
-        val category: String = "",
-        val error: String = "",
-        val registrations: List<Registration> = emptyList(),
-        val registration: Registration? = null
-    )
-
-    private val _uiState = MutableStateFlow(UiState())
+    private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
     init {

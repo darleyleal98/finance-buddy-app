@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,13 +35,13 @@ fun ItemsNotFound(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = modifier.padding(top = 16.dp))
         Text(
-            text = "Result Not Found",
+            text = stringResource(R.string.result_not_found),
             fontSize = 33.sp,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = modifier.padding(top = 8.dp))
         Text(
-            text = "Please try adding a new item so that it is listed on the screen",
+            text = stringResource(R.string.please_try_adding_a_new_item_so_that_it_is_listed_on_the_screen),
             fontSize = 16.sp,
             textAlign = TextAlign.Center
         )

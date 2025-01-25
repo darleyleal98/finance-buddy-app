@@ -24,9 +24,7 @@ class CategoryExpensesViewModel @Inject constructor(
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 
-    init {
-        getAllExpenses()
-    }
+    init { getAllExpenses() }
 
     fun updateNameField(newValue: String) {
         _name.value = newValue

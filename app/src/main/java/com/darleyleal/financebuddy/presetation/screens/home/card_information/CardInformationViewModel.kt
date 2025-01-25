@@ -2,8 +2,6 @@ package com.darleyleal.financebuddy.presetation.screens.home.card_information
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.darleyleal.financebuddy.data.models.Balance
-import com.darleyleal.financebuddy.data.models.Registration
 import com.darleyleal.financebuddy.domain.usercase.BalanceUserCase
 import com.darleyleal.financebuddy.domain.usercase.RegistrationUserCase
 import com.darleyleal.financebuddy.domain.utils.convertToCurrency
@@ -19,14 +17,8 @@ class CardInformationViewModel @Inject constructor(
     private val balanceUserCase: BalanceUserCase,
     private val registration: RegistrationUserCase
 ) : ViewModel() {
-    data class UiState(
-        var balance: Balance? = null,
-        val value: String = "",
-        val incomesList: List<Registration> = emptyList(),
-        val expensesList: List<Registration> = emptyList()
-    )
 
-    private val _uiState = MutableStateFlow(UiState())
+    private val _uiState = MutableStateFlow(CardInformationUiState())
     val uiState = _uiState.asStateFlow()
 
     init {

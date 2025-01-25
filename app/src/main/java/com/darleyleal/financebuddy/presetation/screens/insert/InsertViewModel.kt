@@ -2,8 +2,6 @@ package com.darleyleal.financebuddy.presetation.screens.insert
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.darleyleal.financebuddy.data.models.Category
-import com.darleyleal.financebuddy.data.models.Registration
 import com.darleyleal.financebuddy.domain.usercase.CategoryUserCase
 import com.darleyleal.financebuddy.domain.usercase.RegistrationUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,20 +16,6 @@ class InsertViewModel @Inject constructor(
     private val registrationUserCase: RegistrationUserCase,
     private val categoryUserCase: CategoryUserCase
 ) : ViewModel() {
-
-    data class InsertUiState(
-        val name: String = "",
-        val description: String = "",
-        val value: String = "",
-        val date: String = "",
-        val selectedType: String = "",
-        val category: String = "",
-        val incomes: List<Category> = emptyList(),
-        val expenses: List<Category> = emptyList(),
-        val registrations: List<Registration> = emptyList(),
-        val isLoading: Boolean = false,
-        val error: String? = null
-    )
 
     private val _uiState = MutableStateFlow(InsertUiState(isLoading = true))
     val uiState = _uiState.asStateFlow()

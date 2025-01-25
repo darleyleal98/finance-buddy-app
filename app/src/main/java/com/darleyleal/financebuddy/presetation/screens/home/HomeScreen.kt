@@ -33,7 +33,7 @@ import com.darleyleal.financebuddy.presetation.components.OpenInFullScreenRegist
 import com.darleyleal.financebuddy.presetation.components.RemoveItemDialog
 import com.darleyleal.financebuddy.presetation.screens.home.card_information.CardInformation
 import com.darleyleal.financebuddy.presetation.screens.home.card_information.CardInformationViewModel
-import com.darleyleal.financebuddy.presetation.screens.home.update_registration.UpdateRegistrationModalBottomSheet
+import com.darleyleal.financebuddy.presetation.components.UpdateRegistrationModalBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
