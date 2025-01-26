@@ -75,7 +75,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getAllRegistrations() {
+     fun getAllRegistrations() {
         viewModelScope.launch {
             registrationUserCase.getAllRegistrations().collect { registrations ->
                 _uiState.update {

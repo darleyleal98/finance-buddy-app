@@ -55,6 +55,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.media3.common.ktx)
+    testImplementation(libs.hilt.android.testing)
     val nav_version = "2.8.0"
     val lifecycle_version = "2.8.5"
     val latest_release = "Beta-0.0.5"
@@ -67,11 +69,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.navigation.runtime.ktx)
-    testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    testImplementation(libs.mockk)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
@@ -113,4 +116,13 @@ dependencies {
 
     implementation("androidx.compose.material3:material3:1.1.1")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.truth)
+
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    testImplementation("org.mockito:mockito-core:5.3.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 }
