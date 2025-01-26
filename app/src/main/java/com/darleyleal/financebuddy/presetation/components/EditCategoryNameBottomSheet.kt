@@ -1,5 +1,6 @@
 package com.darleyleal.financebuddy.presetation.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -43,6 +45,7 @@ fun EditCategoryNameBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val statusBarPadding = WindowInsets.statusBars.getTop(LocalDensity.current)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -103,12 +106,23 @@ fun EditCategoryNameBottomSheet(
                         .padding(vertical = 8.dp, horizontal = 8.dp)
                         .size(width = 200.dp, height = 46.dp),
                     onClick = {
-                        onSaveCategory()
-                        scope.launch {
-                            sheetState.hide()
-                        }.invokeOnCompletion {
-                            if (!sheetState.isVisible) {
-                                showModalBottomSheet(false)
+                        when {
+                            text.isEmpty() -> {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.this_field_is_required),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            else -> {
+                                onSaveCategory()
+                                scope.launch {
+                                    sheetState.hide()
+                                }.invokeOnCompletion {
+                                    if (!sheetState.isVisible) {
+                                        showModalBottomSheet(false)
+                                    }
+                                }
                             }
                         }
                     }

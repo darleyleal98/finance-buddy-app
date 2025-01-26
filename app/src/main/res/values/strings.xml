@@ -51,4 +51,8 @@
     <string name="click_to_confirm_category">Click to confirm category</string>
     <string name="result_not_found">Result Not Found</string>
     <string name="please_try_adding_a_new_item_so_that_it_is_listed_on_the_screen">Please try adding a new item so that it is listed on the screen</string>
+    <string name="the_category_field_is_required">The category field is required!</string>
+    <string name="the_category_is_required_click_to_confirm">The type of category is required, click to confirm!</string>
+    <string name="no_categories_to_list">Before creating your first registration you must create a category, it will be listed here.</string>
+    <string name="oops">Oops :(</string>
 </resources>

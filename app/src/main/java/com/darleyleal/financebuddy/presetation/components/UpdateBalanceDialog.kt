@@ -2,15 +2,23 @@ package com.darleyleal.financebuddy.presetation.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.darleyleal.financebuddy.R
 
 @Composable
@@ -23,6 +31,8 @@ fun UpdateBalanceDialog(
     updateBalanceField: () -> Unit,
     onDimiss: () -> Unit,
 ) {
+    var verifyIfTextFieldIsEmpty by remember { mutableStateOf(false) }
+
     AlertDialog(
         title = {
             Text(
@@ -42,6 +52,16 @@ fun UpdateBalanceDialog(
                     },
                     fieldIsValidate = textFieldIsValid
                 )
+                when {
+                    verifyIfTextFieldIsEmpty -> {
+                        Text(
+                            modifier = modifier.padding(horizontal = 8.dp),
+                            text = stringResource(R.string.this_field_is_required),
+                            color = Color.Red,
+                            fontSize = 18.sp
+                        )
+                    }
+                }
             }
         },
         onDismissRequest = {
@@ -50,8 +70,16 @@ fun UpdateBalanceDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    updateBalanceField()
-                    onDimiss()
+                    when {
+                        text.isEmpty() -> {
+                            verifyIfTextFieldIsEmpty = true
+                        }
+
+                        else -> {
+                            updateBalanceField()
+                            onDimiss()
+                        }
+                    }
                 }
             ) {
                 Text(text = stringResource(id = R.string.confirm))

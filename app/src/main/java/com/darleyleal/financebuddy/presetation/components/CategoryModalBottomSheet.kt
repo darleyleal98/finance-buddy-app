@@ -1,5 +1,6 @@
 package com.darleyleal.financebuddy.presetation.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -19,9 +20,14 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +53,8 @@ fun <T> CategoryModalBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     val statusBarPadding = WindowInsets.statusBars.getTop(LocalDensity.current)
+    val context = LocalContext.current
+    var verifyIfRadioOptionWasSelected by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -70,7 +78,7 @@ fun <T> CategoryModalBottomSheet(
             Column {
                 CustomTextField(
                     title = stringResource(id = R.string.category),
-                    text = text,
+                    text = text.trim(),
                     icon = Icons.Filled.Edit,
                     singleLine = true,
                     updateTextValue = {
@@ -85,6 +93,7 @@ fun <T> CategoryModalBottomSheet(
                 )
                 RadioButtonSelection(
                     optionSelected = {
+                        verifyIfRadioOptionWasSelected = true
                         radioOptionSelected(it)
                     },
                     radioButtons = radioOptions
@@ -118,8 +127,31 @@ fun <T> CategoryModalBottomSheet(
                 Button(
                     modifier = modifier
                         .padding(vertical = 8.dp, horizontal = 8.dp)
-                        .size(width = 200.dp, height = 46.dp), onClick = {
-                        saveCategory()
+                        .size(width = 200.dp, height = 46.dp),
+                    onClick = {
+                        when {
+                            text.isEmpty() -> {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.the_category_field_is_required),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            !verifyIfRadioOptionWasSelected -> {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(
+                                        R.string.the_category_is_required_click_to_confirm
+                                    ),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            else -> {
+                                saveCategory()
+                            }
+                        }
                     }
                 ) {
                     Text(

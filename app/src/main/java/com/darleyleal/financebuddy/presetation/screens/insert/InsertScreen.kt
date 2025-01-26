@@ -2,9 +2,11 @@ package com.darleyleal.financebuddy.presetation.screens.insert
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -32,17 +34,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.darleyleal.financebuddy.R
 import com.darleyleal.financebuddy.domain.enums.ViewModelKey
-import com.darleyleal.financebuddy.presetation.navigation.NavigationProvider
 import com.darleyleal.financebuddy.presetation.components.CustomTextField
 import com.darleyleal.financebuddy.presetation.components.DatePickerField
-import com.darleyleal.financebuddy.presetation.components.ItemsNotFound
 import com.darleyleal.financebuddy.presetation.components.TypeRegistration
+import com.darleyleal.financebuddy.presetation.navigation.NavigationProvider
 import com.darleyleal.financebuddy.presetation.theme.FinanceBuddyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,8 +65,8 @@ fun InsertScreen(
     val scrollState = rememberScrollState()
     val context = LocalContext.current
     var validateFields by remember { mutableStateOf(true) }
-
     val uiState by viewModel.uiState.collectAsState()
+    var verifyIfRadioButtomWasSelected by remember { mutableStateOf(false) }
 
     FinanceBuddyTheme {
         Scaffold(
@@ -171,10 +175,11 @@ fun InsertScreen(
                     when (indice) {
                         0 -> {
                             when {
-                                uiState.incomes.isNotEmpty() ->  {
+                                uiState.incomes.isNotEmpty() -> {
                                     TypeRegistration(
                                         listOfCategory = uiState.incomes,
                                         optionSelected = {
+                                            verifyIfRadioButtomWasSelected = true
                                             viewModel.updateSelectedType(it)
                                         },
                                         title = stringResource(id = R.string.select_a_income_type)
@@ -183,7 +188,41 @@ fun InsertScreen(
                                 }
 
                                 else -> {
-                                    ItemsNotFound()
+                                    Text(
+                                        modifier = modifier
+                                            .padding(
+                                                horizontal = 8.dp,
+                                                vertical = 8.dp
+                                            )
+                                            .fillMaxWidth(),
+                                        fontWeight = FontWeight.W700,
+                                        text = stringResource(R.string.oops),
+                                        fontSize = 38.sp,
+                                        textAlign = TextAlign.Center,
+                                        color = Color.Red
+                                    )
+                                    Text(
+                                        modifier = modifier
+                                            .padding(horizontal = 34.dp)
+                                            .fillMaxWidth(),
+                                        text = stringResource(R.string.no_categories_to_list),
+                                        fontSize = 18.sp,
+                                        textAlign = TextAlign.Justify,
+                                        color = when {
+                                            isSystemInDarkTheme() -> Color.Cyan
+                                            else -> Color.Black
+                                        }
+                                    )
+                                }
+                            }
+
+                            when {
+                                !verifyIfRadioButtomWasSelected -> {
+                                    Toast.makeText(
+                                        context,
+                                        stringResource(R.string.click_to_confirm_category),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                         }
@@ -194,6 +233,7 @@ fun InsertScreen(
                                     TypeRegistration(
                                         listOfCategory = uiState.expenses,
                                         optionSelected = {
+                                            verifyIfRadioButtomWasSelected = true
                                             viewModel.updateSelectedType(it)
                                         },
                                         title = stringResource(id = R.string.select_a_expense_type)
@@ -202,7 +242,31 @@ fun InsertScreen(
                                 }
 
                                 else -> {
-                                    ItemsNotFound()
+                                    Text(
+                                        modifier = modifier
+                                            .padding(
+                                                horizontal = 8.dp,
+                                                vertical = 8.dp
+                                            )
+                                            .fillMaxWidth(),
+                                        fontWeight = FontWeight.W700,
+                                        text = stringResource(R.string.oops),
+                                        fontSize = 38.sp,
+                                        textAlign = TextAlign.Center,
+                                        color = Color.Red
+                                    )
+                                    Text(
+                                        modifier = modifier
+                                            .padding(horizontal = 34.dp)
+                                            .fillMaxWidth(),
+                                        text = stringResource(R.string.no_categories_to_list),
+                                        fontSize = 18.sp,
+                                        textAlign = TextAlign.Justify,
+                                        color = when {
+                                            isSystemInDarkTheme() -> Color.Cyan
+                                            else -> Color.Black
+                                        }
+                                    )
                                 }
                             }
                         }

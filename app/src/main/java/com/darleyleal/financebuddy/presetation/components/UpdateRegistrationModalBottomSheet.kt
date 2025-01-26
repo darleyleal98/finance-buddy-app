@@ -165,19 +165,31 @@ fun UpdateRegistrationModalBottomSheet(
                                 .padding(vertical = 8.dp, horizontal = 8.dp)
                                 .size(width = 225.dp, height = 46.dp),
                             onClick = {
-                                onUpdateRegistrationClick()
-                                Toast.makeText(
-                                    context,
-                                    context.getString(
-                                        R.string.the_registration_was_saved_successfully
-                                    ),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                scope.launch {
-                                    sheetState.hide()
-                                }.invokeOnCompletion {
-                                    if (!sheetState.isVisible) {
-                                        updateStateBottonSheet(false)
+                                when {
+                                    viewModel.validateFormFields() -> {
+                                        onUpdateRegistrationClick()
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(
+                                                R.string.the_registration_was_saved_successfully
+                                            ),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        scope.launch {
+                                            sheetState.hide()
+                                        }.invokeOnCompletion {
+                                            if (!sheetState.isVisible) {
+                                                updateStateBottonSheet(false)
+                                            }
+                                        }
+                                    }
+
+                                    else -> {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.this_field_is_required),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
                             }
