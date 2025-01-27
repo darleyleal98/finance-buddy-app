@@ -66,7 +66,6 @@ fun InsertScreen(
     val context = LocalContext.current
     var validateFields by remember { mutableStateOf(true) }
     val uiState by viewModel.uiState.collectAsState()
-    var verifyIfRadioButtomWasSelected by remember { mutableStateOf(false) }
 
     FinanceBuddyTheme {
         Scaffold(
@@ -103,6 +102,14 @@ fun InsertScreen(
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     onPopBackStack()
+                                }
+
+                                viewModel.uiState.value.selectedType.isEmpty() -> {
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.click_to_confirm_category),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
 
                                 else -> {
@@ -179,7 +186,6 @@ fun InsertScreen(
                                     TypeRegistration(
                                         listOfCategory = uiState.incomes,
                                         optionSelected = {
-                                            verifyIfRadioButtomWasSelected = true
                                             viewModel.updateSelectedType(it)
                                         },
                                         title = stringResource(id = R.string.select_a_income_type)
@@ -215,16 +221,6 @@ fun InsertScreen(
                                     )
                                 }
                             }
-
-                            when {
-                                !verifyIfRadioButtomWasSelected -> {
-                                    Toast.makeText(
-                                        context,
-                                        stringResource(R.string.click_to_confirm_category),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
                         }
 
                         1 -> {
@@ -233,7 +229,6 @@ fun InsertScreen(
                                     TypeRegistration(
                                         listOfCategory = uiState.expenses,
                                         optionSelected = {
-                                            verifyIfRadioButtomWasSelected = true
                                             viewModel.updateSelectedType(it)
                                         },
                                         title = stringResource(id = R.string.select_a_expense_type)

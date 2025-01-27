@@ -78,7 +78,7 @@ fun <T> CategoryModalBottomSheet(
             Column {
                 CustomTextField(
                     title = stringResource(id = R.string.category),
-                    text = text.trim(),
+                    text = text,
                     icon = Icons.Filled.Edit,
                     singleLine = true,
                     updateTextValue = {
