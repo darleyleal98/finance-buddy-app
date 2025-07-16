@@ -58,8 +58,9 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     navigationProvider: NavigationProvider,
     selectedItemIndex: Int,
-    onNavigateToInsertScreenWithIndice: (Int) -> Unit,
-    selectedItemIndexUpdate: (Int) -> Unit
+    onNavigateToInsertScreenWithIndice: (Int) -> Unit = {},
+    selectedItemIndexUpdate: (Int) -> Unit = {},
+    showCategoryModalBottomSheet: Boolean = false
 ) {
     val categoryDialogViewModel = navigationProvider.getViewModel(
         ViewModelKey.NEW_CATEGORY
@@ -73,7 +74,7 @@ fun MainScreen(
     var validateBalanceField by remember { mutableStateOf(true) }
     var categoryButtonWasClicked by remember { mutableStateOf(false) }
 
-    var showCategoryModalBottonSheet by remember { mutableStateOf(false) }
+    var showCategoryModalBottonSheet by remember { mutableStateOf(showCategoryModalBottomSheet) }
     val showBalanceDialog = remember { mutableStateOf(false) }
 
     val textFieldIsValid by remember { mutableStateOf(true) }

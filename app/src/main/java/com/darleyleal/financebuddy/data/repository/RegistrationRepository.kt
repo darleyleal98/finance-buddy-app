@@ -20,7 +20,7 @@ class RegistrationRepository @Inject constructor(
     }
 
     fun getRegistrationById(id: Long): Flow<Registration> {
-        return dao.getResgistationById(id).flowOn(Dispatchers.IO).conflate()
+        return dao.getRegistrationById(id).flowOn(Dispatchers.IO).conflate()
     }
 
     fun getAllItemsByRegistrationEqualsIncome(): Flow<List<Registration>> {

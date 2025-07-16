@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
@@ -25,6 +26,7 @@ fun AppNavigation(
 ) {
     var selectedItemIndex by remember { mutableIntStateOf(0) }
     var selectedIndexRegistrationScreen by remember { mutableIntStateOf(0) }
+    var showNewCategoryBottomSheet by remember { mutableStateOf(false) }
 
     NavHost(startDestination = Routes.StartScreen.name, navController = navController) {
         composable(route = Routes.StartScreen.name) {
@@ -49,7 +51,8 @@ fun AppNavigation(
                 onNavigateToInsertScreenWithIndice = {
                     selectedIndexRegistrationScreen = it
                     navController.navigate(Routes.InsertScreen.name)
-                }
+                },
+                showCategoryModalBottomSheet = showNewCategoryBottomSheet
             )
         }
         composable(route = Routes.HomeScreen.name) {
@@ -65,7 +68,12 @@ fun AppNavigation(
                 onPopBackStack = {
                     navController.popBackStack()
                 },
-                indice = selectedIndexRegistrationScreen
+                indice = selectedIndexRegistrationScreen,
+                onNavigateToCategoryScreen = {
+                    navController.navigate(Routes.MainScreen.name)
+                    selectedItemIndex = 2
+                    showNewCategoryBottomSheet = true
+                },
             )
         }
         composable(route = Routes.AnalyticsScreen.name) {
