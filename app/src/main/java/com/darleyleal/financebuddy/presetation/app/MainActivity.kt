@@ -1,12 +1,14 @@
 package com.darleyleal.financebuddy.presetation.app
 
 import android.annotation.SuppressLint
+import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.Scaffold
 import androidx.navigation.compose.rememberNavController
 import com.darleyleal.financebuddy.presetation.navigation.AppNavigation
@@ -33,6 +35,9 @@ class MainActivity : AppCompatActivity() {
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+
         enableEdgeToEdge()
 
         val categoryExpensesViewModel: CategoryExpensesViewModel by viewModels()
