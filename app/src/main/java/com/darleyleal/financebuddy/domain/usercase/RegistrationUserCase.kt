@@ -1,6 +1,6 @@
 package com.darleyleal.financebuddy.domain.usercase
 
-import com.darleyleal.financebuddy.data.repository.RegistrationRepository
+import com.darleyleal.financebuddy.domain.repository.RegistrationRepository
 import com.darleyleal.financebuddy.data.models.Registration
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

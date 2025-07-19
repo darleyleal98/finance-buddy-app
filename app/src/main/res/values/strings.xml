@@ -55,4 +55,5 @@
     <string name="the_category_is_required_click_to_confirm">The type of category is required, click to confirm!</string>
     <string name="no_categories_to_list">Before creating your first registration you must create a category, it will be listed here.</string>
     <string name="oops">Oops :(</string>
+    <string name="recognized_text">Recognized text</string>
 </resources>

@@ -9,6 +9,7 @@ import com.darleyleal.financebuddy.presetation.screens.categories.CategoryViewMo
 import com.darleyleal.financebuddy.presetation.screens.home.card_information.CardInformationViewModel
 import com.darleyleal.financebuddy.presetation.screens.home.HomeViewModel
 import com.darleyleal.financebuddy.presetation.screens.insert.InsertViewModel
+import com.darleyleal.financebuddy.presetation.screens.camera.CameraViewModel
 import com.darleyleal.financebuddy.presetation.screens.start.StarViewModel
 import javax.inject.Inject
 
@@ -21,6 +22,7 @@ class NavigationProvider @Inject constructor(
     insertViewModel: InsertViewModel,
     newCategoryViewModel: CategoryViewModel,
     balanceViewModel: CardInformationViewModel,
+    cameraViewModel: CameraViewModel,
 ) : ViewModel() {
 
     private val viewModels: Map<ViewModelKey, ViewModel> = mapOf(
@@ -32,6 +34,7 @@ class NavigationProvider @Inject constructor(
         ViewModelKey.INSERT to insertViewModel,
         ViewModelKey.NEW_CATEGORY to newCategoryViewModel,
         ViewModelKey.BALANCE to balanceViewModel,
+        ViewModelKey.CAMERA to cameraViewModel
     )
 
     fun getViewModel(key: ViewModelKey): ViewModel {

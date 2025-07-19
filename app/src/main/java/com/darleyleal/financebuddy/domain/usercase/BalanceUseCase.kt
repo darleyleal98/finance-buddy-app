@@ -1,11 +1,11 @@
 package com.darleyleal.financebuddy.domain.usercase
 
-import com.darleyleal.financebuddy.data.repository.BalanceRepository
+import com.darleyleal.financebuddy.domain.repository.BalanceRepository
 import com.darleyleal.financebuddy.data.models.Balance
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class BalanceUserCase @Inject constructor(
+class BalanceUseCase @Inject constructor(
     private val repository: BalanceRepository,
 ) {
     suspend fun updateOrInsertBalance(newValue: String) {

@@ -11,6 +11,7 @@ import com.darleyleal.financebuddy.presetation.screens.categories.CategoryViewMo
 import com.darleyleal.financebuddy.presetation.screens.home.card_information.CardInformationViewModel
 import com.darleyleal.financebuddy.presetation.screens.home.HomeViewModel
 import com.darleyleal.financebuddy.presetation.screens.insert.InsertViewModel
+import com.darleyleal.financebuddy.presetation.screens.camera.CameraViewModel
 import com.darleyleal.financebuddy.presetation.screens.start.StarViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,8 +44,8 @@ fun viewModelProvider(
     insertViewModel: InsertViewModel,
     newCategoryViewModel: CategoryViewModel,
     balanceViewModel: CardInformationViewModel,
+    cameraViewModel: CameraViewModel
 ): NavigationProvider {
-
     val navigationProvider = NavigationProvider(
         categoryExpensesViewModel,
         categoryIncomesViewModel,
@@ -53,7 +54,8 @@ fun viewModelProvider(
         startViewModel,
         insertViewModel,
         newCategoryViewModel,
-        balanceViewModel
+        balanceViewModel,
+        cameraViewModel
     )
     return navigationProvider
 }

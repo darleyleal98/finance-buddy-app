@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.data.repository
+package com.darleyleal.financebuddy.domain.repository
 
 import com.darleyleal.financebuddy.data.dao.CategoryDao
 import com.darleyleal.financebuddy.data.models.Category

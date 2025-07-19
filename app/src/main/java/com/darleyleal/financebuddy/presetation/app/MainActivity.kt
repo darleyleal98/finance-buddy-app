@@ -1,21 +1,24 @@
 package com.darleyleal.financebuddy.presetation.app
 
 import android.annotation.SuppressLint
-import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.Scaffold
 import androidx.navigation.compose.rememberNavController
-import com.darleyleal.financebuddy.presetation.navigation.AppNavigation
 import com.darleyleal.financebuddy.domain.utils.showBiometricLogin
 import com.darleyleal.financebuddy.domain.utils.showSplahScreen
 import com.darleyleal.financebuddy.domain.utils.viewModelProvider
+import com.darleyleal.financebuddy.presetation.navigation.AppNavigation
 import com.darleyleal.financebuddy.presetation.screens.analytics.AnalyticsViewModel
+import com.darleyleal.financebuddy.presetation.screens.camera.CameraViewModel
 import com.darleyleal.financebuddy.presetation.screens.categories.CategoryViewModel
 import com.darleyleal.financebuddy.presetation.screens.categories.category_expenses.CategoryExpensesViewModel
 import com.darleyleal.financebuddy.presetation.screens.categories.category_incomes.CategoryIncomesViewModel
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         enableEdgeToEdge()
 
@@ -48,7 +51,8 @@ class MainActivity : AppCompatActivity() {
         val insertViewModel: InsertViewModel by viewModels()
         val newCategoryViewModel: CategoryViewModel by viewModels()
         val balanceViewModel: CardInformationViewModel by viewModels()
-        
+        val cameraViewModel: CameraViewModel by viewModels()
+
         val navigationProvider = viewModelProvider(
             categoryExpensesViewModel,
             categoryIncomesViewModel,
@@ -57,7 +61,8 @@ class MainActivity : AppCompatActivity() {
             startViewModel,
             insertViewModel,
             newCategoryViewModel,
-            balanceViewModel
+            balanceViewModel,
+            cameraViewModel
         )
 
         showSplahScreen(this)

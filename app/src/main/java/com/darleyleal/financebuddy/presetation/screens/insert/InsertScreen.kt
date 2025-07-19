@@ -25,7 +25,9 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.ViewInAr
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -66,6 +68,7 @@ fun InsertScreen(
     navigationProvider: NavigationProvider,
     paddingValues: PaddingValues,
     onPopBackStack: () -> Unit = {},
+    onNavigateToCameraScreen: () -> Unit,
     onNavigateToCategoryScreen: () -> Unit
 ) {
     val viewModel = navigationProvider.getViewModel(ViewModelKey.INSERT) as InsertViewModel
@@ -328,10 +331,36 @@ fun InsertScreen(
                                             )
                                         }
                                     }
-
                                 }
                             }
                         }
+                    }
+                }
+            },
+            bottomBar = {
+                Button(
+                    modifier = Modifier.fillMaxWidth().padding(102.dp).height(62.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                    onClick =  {
+                        onNavigateToCameraScreen()
+                    }
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ViewInAr,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+
+                        Spacer(modifier = Modifier.padding(4.dp))
+
+                        Text(
+                            text = "Use AI",
+                            fontSize = 18.sp,
+                            color = Color.White
+                        )
                     }
                 }
             }

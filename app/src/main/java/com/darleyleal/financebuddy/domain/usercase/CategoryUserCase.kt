@@ -1,6 +1,6 @@
 package com.darleyleal.financebuddy.domain.usercase
 
-import com.darleyleal.financebuddy.data.repository.CategoyRepository
+import com.darleyleal.financebuddy.domain.repository.CategoyRepository
 import com.darleyleal.financebuddy.data.models.Category
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

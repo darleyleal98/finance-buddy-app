@@ -8,5 +8,6 @@ enum class ViewModelKey {
     START,
     INSERT,
     NEW_CATEGORY,
-    BALANCE
+    BALANCE,
+    CAMERA
 }

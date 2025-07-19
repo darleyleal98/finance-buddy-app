@@ -1,4 +1,4 @@
-package com.darleyleal.financebuddy.data.repository
+package com.darleyleal.financebuddy.domain.repository
 
 import com.darleyleal.financebuddy.data.dao.RegistrationDao
 import com.darleyleal.financebuddy.data.models.Registration

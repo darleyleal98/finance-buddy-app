@@ -6,5 +6,6 @@ enum class Routes {
     CategoriesScreen,
     AnalyticsScreen,
     InsertScreen,
-    MainScreen
+    MainScreen,
+    CameraScreen
 }

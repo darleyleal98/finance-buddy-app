@@ -2,7 +2,7 @@ package com.darleyleal.financebuddy.presetation.screens.home.card_information
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.darleyleal.financebuddy.domain.usercase.BalanceUserCase
+import com.darleyleal.financebuddy.domain.usercase.BalanceUseCase
 import com.darleyleal.financebuddy.domain.usercase.RegistrationUserCase
 import com.darleyleal.financebuddy.domain.utils.convertToCurrency
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CardInformationViewModel @Inject constructor(
-    private val balanceUserCase: BalanceUserCase,
+    private val balanceUseCase: BalanceUseCase,
     private val registration: RegistrationUserCase
 ) : ViewModel() {
 
@@ -31,7 +31,7 @@ class CardInformationViewModel @Inject constructor(
 
     fun updateBalance() {
         viewModelScope.launch {
-            balanceUserCase.updateOrInsertBalance(uiState.value.value)
+            balanceUseCase.updateOrInsertBalance(uiState.value.value)
             cleanBalanceField()
         }
     }
@@ -50,7 +50,7 @@ class CardInformationViewModel @Inject constructor(
 
     private fun getBalance() {
         viewModelScope.launch {
-            balanceUserCase.getBalance().collect { balance ->
+            balanceUseCase.getBalance().collect { balance ->
                 _uiState.update {
                     it.copy(
                         balance = balance

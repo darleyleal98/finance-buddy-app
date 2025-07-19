@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.darleyleal.financebuddy.domain.enums.Routes
 import com.darleyleal.financebuddy.presetation.screens.analytics.AnalyticsScreen
+import com.darleyleal.financebuddy.presetation.screens.camera.CameraScreen
 import com.darleyleal.financebuddy.presetation.screens.categories.CategoryScreen
 import com.darleyleal.financebuddy.presetation.screens.home.HomeScreen
 import com.darleyleal.financebuddy.presetation.screens.insert.InsertScreen
@@ -74,6 +75,9 @@ fun AppNavigation(
                     selectedItemIndex = 2
                     showNewCategoryBottomSheet = true
                 },
+                onNavigateToCameraScreen = {
+                    navController.navigate(Routes.CameraScreen.name)
+                }
             )
         }
         composable(route = Routes.AnalyticsScreen.name) {
@@ -84,6 +88,12 @@ fun AppNavigation(
         }
         composable(route = Routes.CategoriesScreen.name) {
             CategoryScreen(
+                navigationProvider = navigationProvider,
+                paddingValues = paddingValues
+            )
+        }
+        composable(route = Routes.CameraScreen.name) {
+            CameraScreen(
                 navigationProvider = navigationProvider,
                 paddingValues = paddingValues
             )
